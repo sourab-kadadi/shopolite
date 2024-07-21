@@ -1,0 +1,84 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button text="" icon="chevron-back-outline" [defaultHref]="'/tabs/home'"></ion-back-button>
+        </ion-buttons>
+        <ion-title *ngIf="!isLoading">
+            {{category?.name}}
+        </ion-title>
+    </ion-toolbar>
+    <div class="search_box animate__animated animate__zoomIn" *ngIf="!serverError">
+        <ion-icon class="zmdi zmdi-search ion-text-start"></ion-icon>
+        <ion-searchbar  class="ion-no-padding" searchIcon="hide" placeholder="{{'search_store' | translate}}"
+            (ionChange)="onChangeSearch($event)" [(ngModel)]="filter.search" enterkeyhint="search"></ion-searchbar>
+    </div>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" pullFactor="0.9" pullMin="60" pullMax="200" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Pull to refresh"
+      refreshingSpinner="circles" refreshingText="Refreshing..." class="ion-padding-top-refresh">
+    </ion-refresher-content>
+  </ion-refresher>
+
+
+  <div *ngIf="serverError && !isLoading" class="delivered animate__animated animate__fadeInUp, no_network">
+    <img src="../../assets/images/no_internet.gif">
+    <div class="delivered animate__animated animate__fadeInUp no_network_text">
+      <h6 class="top_margin">Could not connect to the internet.</h6>
+      <h6>Please check your network.</h6>
+      <h6> <a href="{{'tel:'+ 918558905905}}" style="text-decoration: none;">
+          <ion-icon class="zmdi zmdi-phone ion-text-end icon-padding"></ion-icon> Contact Support
+        </a></h6><br>
+      <div class="" (click)="tryAgain()"><a style="text-decoration: none;"><u>Refresh and try again</u></a></div>
+    </div>
+  </div>
+
+  <ion-list lines="none" *ngIf="isLoading">
+    <ion-item class=" col-12 animate__animated animate__fadeInUp" *ngFor="let number of [0,1,2,3,4]">
+    <div class="item-list">
+        <div class="itemMainImg">
+          <ion-skeleton-text animated="true" style="width: 360px; height: 172px"></ion-skeleton-text>
+        </div>
+    </div>
+    </ion-item>
+</ion-list>
+
+
+    <ion-list lines="none" *ngIf="!isLoading && !serverError">
+        <h2>{{totalCount}} {{'stores_found' | translate}}</h2>
+        <ion-item class=" col-12 animate__animated animate__fadeInUp" *ngFor="let store of list" (click)="items(store.storeCustomId)">
+        <div class="item-list list-badge">
+            <!-- <div class="item-details-left">
+              <span> {{'Store Unvailable'}}</span>
+            </div> -->
+            <h3 *ngIf= "!store.isAvailable" class="offline"> offline </h3>
+            <div class="item-details">
+                <span> {{store?.storeType?.name || 'shop' }}</span>
+                <span class="break"> {{ store.calcDistance / 1000 | number : '1.2-2' }}  KM</span>
+            </div>
+
+            <div class="itemMainImg"><img
+                    src="{{ s3path + store.storeImage?.filePath || null }}" [ngClass]="{'isStoreClosed': !store.isAvailable}">
+            </div>
+            <!-- <div class="item-list-logo"><img
+                    src="{{ s3path + store.logo?.filePath || null }}">
+            </div> -->
+            <div class="shopDetailMain">
+            <div class="shopName">
+                <div class="shopText ng-star-inserted"><span class="textWhiteColor">{{store.businessName}}</span></div>
+            </div>
+            <div *ngIf= "store.isAvailable" class="kmDisaplay">
+                <div class="circle ng-star-inserted"><span class="textWhiteColor">{{ '30' }}</span><span
+                        class="textWhiteColor break">MIN</span></div>
+            </div>
+            </div>
+        </div>
+        </ion-item>
+    </ion-list>
+
+  <ion-infinite-scroll threshold="15%" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="{{'Loading_more_data' | translate}}">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

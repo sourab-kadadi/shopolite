@@ -1,0 +1,28 @@
+<div id="open-modal">    <img src="../../../assets/images/support.png"></div>
+  <ion-modal id="type-modal" #modal trigger="open-modal">
+    <ng-template>
+      <ion-content>
+        <ion-toolbar>
+          <ion-title >
+          <div class="item-container">
+            <h2><strong>Customer Support</strong></h2></div>
+          </ion-title>
+        </ion-toolbar>
+        <ion-list>
+          <div class="title_inner d-flex" >
+            <a href="{{'tel:'+ 918558905905}}" style="text-decoration: none;" class="d_flex_adjusted">
+              <ion-icon class="zmdi zmdi-phone ion-text-end icon-padding font-color-atag margin_adjustment"></ion-icon>
+              <h6 class="font-color-atag">Call us</h6>
+            </a>
+          </div>
+          <div class="line_divider"></div>
+          <div class="title_inner d-flex" >
+            <a href="https://wa.me/message/GUAI6HD4GWNHG1" style="text-decoration: none;" class="d_flex_adjusted">
+              <ion-icon class="font-color-atag" name="logo-whatsapp"></ion-icon>
+              <h6 class="font-color-atag">Chat with us</h6>
+            </a>
+</div>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>

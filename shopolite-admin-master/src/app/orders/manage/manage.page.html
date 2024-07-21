@@ -1,0 +1,223 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/orders"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Order Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ngx-ui-loader [loaderId]="'loader-orders-manage-page'" class="full"></ngx-ui-loader>
+  <ion-refresher slot="fixed" pullFactor="0.9" pullMin="60" pullMax="200" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Pull to refresh"
+      refreshingSpinner="circles" refreshingText="Refreshing..." class="ion-padding-top-refresh">
+    </ion-refresher-content>
+  </ion-refresher>
+
+
+
+  <ion-grid>
+    <ion-item>
+      <ion-text> <b>Order Status - {{this.orderDetails?.orderStatus}} </b></ion-text></ion-item>
+    <br>
+    <ion-item> <ion-text> <b>Order Date - {{this.orderDetails?.createdAt | date:'medium':'UTC +5:30'}} </b></ion-text>
+    </ion-item>
+
+    <ion-row>
+      <ion-col size="10">
+        <ion-item>
+          <ion-row>
+            <ion-text> <b>Store - {{this.orderDetails?.storeDetails?.businessName}} </b></ion-text>
+          </ion-row> </ion-item>
+        <br>
+      </ion-col>
+      <ion-col size="2" class="padding-top-call-icon">
+        <a href="{{'tel:'+ this.orderDetails?.storeOwnerDetails?.phoneNo}}">
+          <ion-icon name="call"></ion-icon>
+        </a>
+      </ion-col>
+    </ion-row>
+    <ion-item>
+      <ion-row>
+        <ion-col size="9">
+          <ion-text> <b>Store Location - </b>{{this.orderDetails?.storeDetails?.address1}} </ion-text>
+        </ion-col>
+        <ion-col size="3">
+          <ion-button (click)="navigateToStore()"> <b>Map</b> </ion-button>
+        </ion-col>
+      </ion-row></ion-item>
+
+    <!-- <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-text> <b>Store Location - </b>{{this.orderDetails?.storeDetails?.address1}} </ion-text>
+        </ion-item>
+      </ion-col>
+
+    </ion-row> -->
+
+
+
+
+    <ion-row>
+      <ion-col size="10">
+        <ion-item>
+          <ion-text><b>Customer - {{this.orderDetails?.address?.fullName}} </b></ion-text>
+        </ion-item>
+      </ion-col>
+      <ion-col size="2" class="padding-top-call-icon">
+        <a href="{{'tel:'+ this.orderDetails?.customerDetails?.phoneNo}}">
+          <ion-icon name="call"></ion-icon>
+        </a>
+      </ion-col>
+    </ion-row>
+
+
+
+
+    <ion-item>
+      <ion-row>
+        <ion-col size="9">
+          <ion-text><b>Customer Location</b> <br> <b>Tag </b>- {{this.orderDetails?.address?.tag}},<br>
+            {{this.orderDetails?.address?.buildingNumber}}, {{this.orderDetails?.address?.buildingName}},
+            {{this.orderDetails?.address?.area}}
+            <br><b> Landmark -</b> {{this.orderDetails?.address?.landmark}} </ion-text>
+          <ion-text
+            *ngIf="this.orderDetails?.address.reciverPhoneNumber && this.orderDetails?.address.reciverPhoneNumber !==''">
+            <br><br>
+            Receiver phone - <a href="{{'tel:'+ this.orderDetails?.address?.reciverPhoneNumber}}">
+              <ion-icon name="call"></ion-icon>
+            </a></ion-text>
+        </ion-col>
+        <ion-col size="3">
+          <ion-button (click)="navigateToCustomer()"> <b>Map</b> </ion-button>
+        </ion-col>
+      </ion-row></ion-item>
+
+
+
+
+    <ion-row>
+      <ion-col size="12">
+        <ion-text><b>Order Number - {{this.orderDetails?.orderGroupId}} </b></ion-text>
+      </ion-col>
+    </ion-row>
+
+    <br>
+
+
+        <ion-row>
+          <ion-col size="4">
+            <ion-text><b>Product Image</b></ion-text>
+          </ion-col>
+          <ion-col size="6">
+            <ion-text><b>Product Name and quantity</b></ion-text>
+          </ion-col>
+          <ion-col size="2">
+            <ion-text><b>Amount</b></ion-text>
+          </ion-col>
+        </ion-row>
+        <br>
+        <ion-item *ngFor="let item of this.orderDetails?.orderList ">
+          <ion-row>
+            <ion-col size="4">
+              <img src="{{ s3path + item.image.filePath }}">
+            </ion-col>
+
+            <ion-col size="6">
+              <ion-text>{{this.item?.productName}}</ion-text> <br><br>
+              Qty - {{this.item?.unitValue}}{{this.item?.unit}} x {{this.item?.quantity}}
+            </ion-col>
+            <ion-col size="2">
+              <ion-text><b>&#8377; {{this.item?.sellingPrice}}</b></ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+
+        <ion-row>
+          <ion-col size="4">
+          </ion-col>
+          <ion-col size="8">
+            <ion-item><b>
+                Total Items: {{this.orderDetails?.totalItem }} <br>
+                Total Cart individual Items: {{this.orderDetails?.totalCartQuantity }}
+              </b></ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-item>
+<b>          Note - {{this.orderDetails?.note }}</b>
+        </ion-item>
+  
+
+<!-- <ion-row>
+  <div>
+    <h4 class="pricing-head"> Store Payment</h4></div>
+</ion-row> -->
+
+        <ion-row class="border-store-customer">
+          <ion-col size="3" class="pricing-head">
+            Store Payment
+          </ion-col>
+          <ion-col size="9">
+            <ion-item><b>
+                Total Amount to pay: &#8377; {{this.orderDetails?.totalCartCost }} <br>
+                Total Store order cost: &#8377; {{this.orderDetails?.totalStoreOrderCost }} <br> 
+              </b></ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="border-store-customer">
+          <ion-col size="3" class="pricing-head">
+            Customer Payment
+          </ion-col>
+          <ion-col size="9">
+            <ion-item>
+              Total Cart Original Price: : &#8377; {{this.orderDetails?.totalCartOriginalPrice }} <br> 
+              Total Cart Discount: : &#8377; {{this.orderDetails?.totalCartDiscount }} <br> 
+                Total delivery cost: &#8377; {{this.orderDetails?.totalDeliveryCost }} <br></ion-item>
+                <ion-item>
+                <b>Total Amount to collect: &#8377; {{this.orderDetails?.totalCustomerOrderCost }} </b> <br></ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-text><b> Distance from Store to customer calculation</b></ion-text>
+          <br>
+          <ion-item>
+            total distance: {{this.orderDetails?.deliveryDistanceMatrix?.distance}} Km <br>
+            Min. delivery price: {{this.orderDetails?.deliveryConfig?.minDeliveryPrice}}<br>
+            Threshold Delivery km: {{this.orderDetails?.deliveryConfig?.thresholdDeliveryKm}}<br>
+            Flat charge: {{this.orderDetails?.deliveryConfig?.thresholdFlatCharges}}<br>
+            Delivery charge per Km: {{this.orderDetails?.deliveryConfig?.deliveryChargePerKm}}<br>        
+                    </ion-item>
+
+        </ion-row>
+
+
+
+
+
+  </ion-grid>
+
+
+  <ion-button size="large" expand="full" (click)="askConfirmation(orderDetails._id, 'READY_TO_DELIVER')" class="btn"
+    *ngIf="orderDetails?.orderStatus==='ACCEPT'">Ready To Deliver</ion-button>
+  <ion-button size="large" expand="full" (click)="askConfirmation(orderDetails._id, 'DELIVERED')" class="btn"
+    *ngIf="orderDetails?.orderStatus==='READY_TO_DELIVER'">Confirm Delviered</ion-button>
+  <ion-button size="large" expand="full" color="light" class="btn"
+    *ngIf="orderDetails?.orderStatus === 'DELIVERED'">Order Delivered</ion-button>
+  <ion-button size="large" expand="full" color="light" class="btn" *ngIf="orderDetails?.orderStatus === 'REJECT'">Order
+    Rejected</ion-button>
+  <div class="acc-rej-button d-flex">
+    <ion-button size="default" fill="outline" expand="full" (click)="askConfirmation(orderDetails._id, 'REJECT')"
+      class="reject-order-btn" *ngIf="orderDetails?.orderStatus==='PENDING'">Reject</ion-button>
+    <ion-button size="default" expand="full" class="btn" (click)="askConfirmation(orderDetails._id, 'ACCEPT')"
+      *ngIf="orderDetails?.orderStatus==='PENDING'">Accept</ion-button>
+
+  </div>
+
+
+
+
+</ion-content>

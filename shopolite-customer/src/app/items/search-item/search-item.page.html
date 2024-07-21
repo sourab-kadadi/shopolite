@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start" mode="md">
+          <ion-back-button text="" icon="chevron-back-outline" [defaultHref]="previosUrl"></ion-back-button>
+      </ion-buttons>
+      <ion-title>
+          <div class="title_inner d-flex" (click)="dismiss()">
+              <ion-icon class="zmdi zmdi-close end ion-text-end"></ion-icon>
+          </div>
+      </ion-title>
+  </ion-toolbar>
+
+  <div class="search_box">
+    <ion-icon class="zmdi zmdi-search ion-text-start"></ion-icon>
+    <ion-searchbar class="ion-no-padding" searchIcon="hide" [(ngModel)]="filter.search" (ionChange)="onChangeSearch($event)" placeholder="{{'search_item_or_store' | translate}}"></ion-searchbar>
+</div>
+<div class="dish_type_main">
+  <div *ngIf="storeType === 'Restaurant'" class="item_inner d-flex dishContent">
+    <ion-chip class="chip_formatting" *ngFor="let dishType of restaurantMenuDishTypes" (click)="dishSelection(dishType.key)" [ngStyle]="dishType.key === filter?.type ? {'background-color': '#d8d8d8'} : {'background-color': 'white'}">
+        <img class="image_width" alt="{{dishType.name}}" src="{{dishType.img}}" />
+     <ion-label class="label_formatting total-amount">&nbsp;<h5>{{dishType.name}}</h5></ion-label>
+      <ion-icon *ngIf="dishType.key === filter?.type" name="close-outline"></ion-icon>
+    </ion-chip>
+  </div>
+</div>
+
+</ion-header>
+
+<ion-content>
+
+  <div class="tab_content">
+    <ion-slides #slides>
+        <ion-slide>
+              <ion-list lines="none">
+                  <ion-item class="animate__animated animate__fadeInUp"  *ngFor="let product of products; let i = index">
+                      <div class="item_inner d-flex">
+                          <div class="img_box" (click)="variation_selection(i)">
+                              <img src="{{ s3path + product.image.filePath }}">
+                          </div>
+                          <div class="text_box">
+                              <h3 class="truncate">{{product.productName}}</h3>
+                              <!-- <h4 *ngIf="product.sellingPrice">₹ {{product.sellingPrice}}</h4> -->
+                              <p class="total-amount" *ngIf="product">
+                                <span class="currency"> ₹ </span> <strong> {{ product.sellingPrice}} </strong>
+                                <strong class="discount-frame" *ngIf="product.discount?.value &&  product.discount?.type"
+                                  ><span *ngIf="product.discount?.type == 'AMOUNT'"> Flat ₹ </span
+                                  >{{product.discount?.value}}<span *ngIf="product.discount?.type == 'PERCENTAGE'">
+                                    %
+                                  </span></strong
+                                >
+                              </p>
+                              <p
+                              class="discount"
+                              *ngIf="product && product.discount?.value &&  product.discount?.type"
+                            >
+                              <span class="main-frame">
+                                <span> <span class="currency"> ₹ </span> <strong> {{product.originalPrice}} </strong> </span>
+                              </span>
+                            </p>
+                              <div class="buttons d-flex">
+                                <h5 (click)="variation_selection(i)" *ngIf="product.offerUnit">{{product.unitValue}} {{product.unit}} ({{product.offerUnit}})
+                                  <ion-icon class="zmdi zmdi-chevron-down ion-text-end"></ion-icon>
+                              </h5>
+                              <h5 (click)="variation_selection(i)" *ngIf="!product.offerUnit">{{product.unitValue}} {{product.unit}}
+                                <ion-icon class="zmdi zmdi-chevron-down ion-text-end"></ion-icon>
+                            </h5>
+                                  <h6 class="end" *ngIf="!product.myCart && isStoreAvailable" (click)="addToCart(product._id, i)">{{'add' | translate}}</h6>
+                                  <!--                            <h6 class="end">{{'add' | translate}}</h6>-->
+                                  <p  *ngIf="product.myCart" class="end">
+                                      <span (click)="decrement(product.myCart.quantity, product._id, i)" >-</span>
+                                      <strong>{{product.myCart.quantity}}</strong>
+                                    <!-- <input name="quantity" type="number" class="quantity__input" [value]="product.myCart.quantity" (change)="OnKeyUp($event, product._id, i)"> -->
+                                  <span (click)="increment(product.myCart.quantity, product._id, i)">+</span>
+                                  </p>
+                              </div>
+                          </div>
+                      </div>
+                  </ion-item>
+                  <ion-infinite-scroll threshold="50%" (ionInfinite)="loadData($event)">
+                      <ion-infinite-scroll-content
+                        loadingSpinner="bubbles"
+                        loadingText="Loading more data...">
+                      </ion-infinite-scroll-content>
+                    </ion-infinite-scroll>
+              </ion-list>
+              </ion-slide>
+              </ion-slides>
+  </div>
+</ion-content>
+<ion-footer *ngIf="totalCartCost && totalCartCost > 0 && isStoreAvailable" class="ion-no-border animate__animated animate__fadeInUp">
+  <div class="cart_btn" (click)="cart()">
+      <h2 class="d-flex">
+          <img src="assets/images/ic_cart_wt.png">&nbsp; &nbsp;
+          {{totalCartQuantity}} {{'items' | translate}} &nbsp;|&nbsp; ₹ {{totalCartCost}}
+          <span class="end">{{'view_cart' | translate}}</span>
+      </h2>
+  </div>
+</ion-footer>

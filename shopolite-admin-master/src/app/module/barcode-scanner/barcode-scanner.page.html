@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-title>
+          <div class="title_inner title-flex">
+              <span>{{'Barcode Scanner' }}</span> 
+      <ion-icon class="close-button"  name="close" *ngIf="barcodeType != 'PRODUCT'" (click)="dismiss(null)"> </ion-icon>
+          </div>
+      </ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content [style.--background]="scanActive ? '#00000000' : '#000000'">
+  <div class="ocrloader" *ngIf="scanActive">
+    <p>Scanning</p>
+    <em></em>
+    <span></span>
+  </div>
+
+  <div  *ngIf="!scanActive" class="retryButton">
+    <ion-button (click)="startScan()"><ion-icon name="refresh-circle-outline"></ion-icon> Retry</ion-button>
+  </div>
+
+  <div  class="barcodeEnter">
+  <ion-card>
+    <ion-card-header>
+      <ion-item>
+        <ion-input placeholder="Enter Barcode" [(ngModel)]="result"></ion-input>
+        <ion-button (click)="enteredBarcode()"><ion-icon name="arrow-forward-outline"></ion-icon>  </ion-button>
+      </ion-item>
+    </ion-card-header>
+  </ion-card>
+  </div>
+</ion-content>

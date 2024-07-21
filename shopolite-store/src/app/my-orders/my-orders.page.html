@@ -1,0 +1,145 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-title>
+          <div class="title_inner d-flex" (click)="presentActionSheet()">
+          {{'Store Timings' | translate}}
+          </div>
+      </ion-title>
+  </ion-toolbar>
+  <!-- <ion-segment mode="ios" (ionChange)="segmentChanged()" [(ngModel)]="segment">
+        <ion-segment-button mode="ios" value="0">
+            <ion-label>{{'new_orders' | translate}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button mode="ios" value="1">
+            <ion-label>{{'past_orders' | translate}}</ion-label>
+        </ion-segment-button>
+    </ion-segment> -->
+</ion-header>
+
+<ion-content class="bg_color" fullscreen>
+
+  <div class="tab_content">
+    <ion-slides #slides (ionSlideDidChange)="slideChanged()">
+      <ion-refresher slot="fixed" pullFactor="0.9" pullMin="60" pullMax="200" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Pull to refresh"
+          refreshingSpinner="circles" refreshingText="Refreshing..." class="ion-padding-top-refresh">
+        </ion-refresher-content>
+      </ion-refresher>
+
+      <ion-slide>
+        <ion-list lines="none">
+
+
+          <div *ngIf="isLoading ">
+            <ion-item *ngFor="let number of [0,1,2,3,4,5,6,7,8]" class="pending animate__animated animate__fadeInUp">
+              <div class="item_inner">
+                <div class="item_info d-flex">
+                  <div class="itme_img">
+                    <ion-thumbnail slot="start" style="width: 45px; height: 45px">
+                      <ion-skeleton-text animated="true" style="width: 45px; height: 45px"></ion-skeleton-text>
+                    </ion-thumbnail>
+                  </div>
+                  <div class="item_details">
+                    <ion-row>
+                      <ion-col size="10">
+                        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+                      </ion-col>
+                      <ion-col size="2">
+                        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col size="9">
+                        <ion-skeleton-text animated style="width: 35%"></ion-skeleton-text>
+                      </ion-col>
+                      <ion-col size="3">
+                        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                      </ion-col>
+                    </ion-row>
+                  </div>
+                </div>
+                <div class="order_info d-flex">
+                  <ion-row>
+                    <ion-col size="3"></ion-col>
+                    <ion-col size="7">
+                      <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                    </ion-col>
+                    <ion-col size="2">
+                      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </div>
+            </ion-item>
+          </div>
+
+          <div *ngIf="!isLoading">
+            <h2 *ngIf="totalCount > 0" class="animate__animated animate__fadeInUp">{{'total_orders' | translate}} {{orderType | translate}} {{totalCount}}</h2>
+            <ion-item *ngFor="let order of orderList" class="pending animate__animated animate__fadeInUp"
+              (click)="order_info(order._id)">
+              <div class="item_inner">
+                <div class="item_info d-flex">
+                  <div class="itme_img">
+                    <img src="{{s3path + order.storeDetails?.logo?.filePath}}">
+                  </div>
+                  <div class="item_details">
+                    <h3 class="d-flex">
+                      {{'order_no' | translate}} {{order.orderGroupId}}
+                      <span class="end">
+                        ₹ {{order.totalCartCost}}
+                      </span>
+                    </h3>
+                    <h4 class="d-flex">{{order.createdAt | date: 'MMM d, y, h:mm a'}} <span class="end">
+                      {{'cash_on_delivery' | translate}}</span></h4>
+                  </div>
+                </div>
+                <div class="order_info d-flex">
+                  <div class="itme_img">
+                  </div>
+                  <ion-row>
+                    <!-- <ion-col size="6">
+                                        <h5>{{'order_num' | translate}} {{order.orderGroupId}}</h5>
+                                    </ion-col> -->
+                    <ion-col size="6">
+                      <h5> {{order.totalItem}} {{'items' | translate}}</h5>
+                    </ion-col>
+
+                    <ion-col size="6" *ngIf="order?.orderStatus === 'PENDING'">
+                      <h5 class="ion-text-end order_status text-color-red"> {{order.orderStatus | translate | titlecase}}</h5>
+                    </ion-col>
+                    <ion-col size="6" *ngIf="order?.orderStatus === 'READY_TO_DELIVER'">
+                      <h5 class="ion-text-end order_status text-color-orange"> {{order.orderStatus | translate | titlecase}}</h5>
+                    </ion-col>
+                    <ion-col size="6" *ngIf="order?.orderStatus === 'DELIVERED'">
+                      <h5 class="ion-text-end order_status text-color-green"> {{order.orderStatus | translate | titlecase}}</h5>
+                    </ion-col>
+                    <ion-col size="6" *ngIf="order?.orderStatus === 'RETURN'">
+                      <h5 class="ion-text-end order_status text-color-purple"> {{order.orderStatus| translate | titlecase}}</h5>
+                    </ion-col>
+                    <ion-col size="6" *ngIf="order?.orderStatus === 'REJECT'">
+                      <h5 class="ion-text-end order_status text-color-black"> {{order.orderStatus| translate | titlecase}}</h5>
+                    </ion-col>
+                    <ion-col size="6" *ngIf="order?.orderStatus === 'ACCEPT'">
+                      <h5 class="ion-text-end order_status text-color-orange"> {{order.orderStatus| translate | titlecase}}</h5>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </div>
+            </ion-item>
+          </div>
+        </ion-list>
+      </ion-slide>
+    </ion-slides>
+  </div>
+  <div  *ngIf="!orderList.length && totalCount === 0" class="delivered animate__animated animate__fadeInUp, notFoundOrder">
+    <h5>{{'No' | translate }} {{orderType | translate | titlecase}} {{'orders_found' | translate}}</h5>
+</div>
+
+  <ion-infinite-scroll threshold="15%" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="{{'Loading_more_data' | translate}}">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

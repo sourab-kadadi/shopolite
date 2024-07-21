@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" mode="md">
+      <ion-back-button text="" icon="chevron-back-outline" defaultHref="/tabs/my_account"></ion-back-button>
+  </ion-buttons>
+    <ion-title>
+      <div class="title_inner d-flex">
+        {{'Store Timing' | translate}}
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let timing of timings; let i = index">
+    <ion-card-header>
+      <ion-card-title>
+        {{timing.nameOfDay}}  
+        <div class="toggle_box isHolidatToggle end" [ngClass]="{'in_stock': timing.isHoliday}">
+          <span *ngIf="timing.isHoliday">{{'Holiday' | translate}}</span>&nbsp;&nbsp;
+          <span *ngIf="!timing.isHoliday">{{'Working' | translate}}</span>&nbsp;&nbsp;
+          <ion-toggle
+            [checked]="timing.isHoliday"
+            mode="ios"
+            (ionChange)="onStatusChange($event, i)"
+          ></ion-toggle>
+        </div> 
+      </ion-card-title>
+
+    </ion-card-header>
+    <ion-card-content class="card-content">
+      <ion-chip *ngFor="let dayTiming of timing.timings; let j = index">
+        <ion-icon color="tertiary" name="time"></ion-icon>
+        <ion-label
+          >{{dayTiming?.startTime }} - {{dayTiming?.endTime}}</ion-label
+        >
+        <ion-icon
+          color="danger"
+          name="close-circle"
+          (click)="deleteTiming(i, j)"
+        ></ion-icon>
+      </ion-chip>
+      <ion-fab color="" vertical="bottom" horizontal="end">
+        <ion-fab-button size="small">
+          <ion-icon name="add" (click)="open(i)"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+
+    </ion-card-content> 
+  </ion-card>
+</ion-content>
+<ion-footer class="ion-no-border animate__animated animate__fadeInUp">
+  <ion-button type="submit" size="large" expand="full" class="btn" (click)="updateTimings(timings)">{{'Save Timings' | translate}}</ion-button>
+</ion-footer>

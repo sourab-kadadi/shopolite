@@ -1,0 +1,222 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" mode="md">
+      <ion-back-button text="" icon="chevron-back-outline" [defaultHref]="previosUrl"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <div class="title_inner d-flex" (click)="searchItem()" *ngIf="!serverError && !isLoadingOnlyProducts">
+        <ion-icon name="search" class="end ion-text-end"></ion-icon>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+
+  <div *ngIf="!isLoadingStore && !serverError && storeInfo?.isAvailable === false">
+    <div class="display_flex">
+
+      <div class="align_flex">
+        <div class="not_delivering">
+          <span class="not_delivering_font">NOT</span><span class="not_delivering_font break">DELIVERING</span>
+        </div>
+        <div>
+          <img class="logo_display_store_offline" src="{{ s3path + storeInfo?.logo?.filePath || null}}">
+        </div>
+      </div>
+      <div class="store_name" *ngIf="!isLoadingStore && !serverError">
+        <h2 class="animate__animated animate__fadeInUp"> {{storeInfo?.businessName}}</h2>
+        <h4 class="animate__animated animate__fadeInUp"> Currently the {{storeInfo?.storeType?.name}} is closed<br> and
+          not available for delivery</h4>
+      </div>
+    </div>
+  </div>
+  <div class="store_details" *ngIf="isLoadingStore">
+    <h2 class="animate__animated animate__fadeInUp">
+      <ion-skeleton-text animated="true" style="width: 50%"></ion-skeleton-text>
+    </h2>
+    <h2 class="animate__animated animate__fadeInUp">
+      <ion-skeleton-text animated="true" style="width: 50%"></ion-skeleton-text>
+    </h2>
+    <h2 class="animate__animated animate__fadeInUp">
+      <ion-skeleton-text animated="true" style="width: 50%"></ion-skeleton-text>
+    </h2>
+
+
+    <!-- <h5 class="d-flex end" (click)="reviews()" [@zoomInOnEnter] [@zoomOutOnLeave] >
+              <ion-icon class="zmdi zmdi-star ion-text-start"></ion-icon>
+              4.2
+              &nbsp; &nbsp;
+              <span>148 {{'reviews' | translate}}
+                  <ion-icon class="zmdi zmdi-chevron-right ion-text-end"></ion-icon>
+              </span>
+          </h5> -->
+    <!-- </div> -->
+  </div>
+
+
+  <div class="store_details" *ngIf="!isLoadingStore && !serverError && storeInfo?.isAvailable === true">
+    <h2 class="animate__animated animate__fadeInUp"> {{storeInfo?.businessName}}</h2>
+
+    <h4 class="d-flex animate__animated animate__fadeInUp">
+      <ion-icon class="zmdi zmdi-pin ion-text-start"></ion-icon>
+      <!-- {{storeInfo?.calcDistance / 1000 |  number : '1.2-2'}} km | -->
+      {{storeInfo?.storeType?.name}}
+    </h4>
+    <div class="d-flex animate__animated animate__fadeInUp">
+      <h4 class="d-flex">
+        <ion-icon class="zmdi zmdi-time ion-text-start"></ion-icon>
+        30 MINS
+      </h4>
+
+      <!-- <h5 class="d-flex end" (click)="reviews()" [@zoomInOnEnter] [@zoomOutOnLeave] >
+                <ion-icon class="zmdi zmdi-star ion-text-start"></ion-icon>
+                4.2
+                &nbsp; &nbsp;
+                <span>148 {{'reviews' | translate}}
+                    <ion-icon class="zmdi zmdi-chevron-right ion-text-end"></ion-icon>
+                </span>
+            </h5> -->
+    </div>
+  </div>
+
+  <section class="card">
+  <div *ngFor="let coupon of couponList" class="card--content" (click)="couponDetails(coupon)">
+          <div>
+        <p>
+          {{coupon.sortTitle}}
+        </p>
+        <span>
+          {{coupon.sortDesc}}
+        </span>
+      </div>
+  </div>
+</section>
+
+<div *ngIf="!serverError && this.storeInfo?.storeType?.name === 'Restaurant'" class="item_inner d-flex">
+  <ion-chip class="chip_formatting" *ngFor="let dishType of restaurantMenuDishTypes" (click)="dishSelection(dishType.key)" [ngStyle]="dishType.key === filter?.type ? {'background-color': '#d8d8d8'} : {'background-color': 'white'}">
+      <img class="image_width" alt="{{dishType.name}}" src="{{dishType.img}}" />
+   <ion-label class="label_formatting total-amount">&nbsp;<h5>{{dishType.name}}</h5></ion-label>
+    <ion-icon *ngIf="dishType.key === filter?.type" name="close-outline"></ion-icon>
+  </ion-chip>
+</div>
+
+  <ion-segment class="animate__zoomIn" mode="ios" (ionChange)="segmentChanged($event)" [(ngModel)]="segment" scrollable>
+    <ion-segment-button *ngFor="let subCat of subCategory" mode="ios" [value]="subCat._id">
+      <ion-label>{{subCat.name}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content>
+
+  <div class="tab_content" *ngIf="isLoadingOnlyProducts">
+    <ion-list lines="none">
+      <ion-item class="animate__animated animate__fadeInUp" *ngFor="let number of [0,1,2,3,4,5]; let i = index">
+        <div class="item_inner d-flex">
+          <div class="img_box">
+            <ion-skeleton-text animated="true" style="width: 100%; height: 110px"></ion-skeleton-text>
+          </div>
+          <div class="text_box">
+            <h3 class="truncate">
+              <ion-skeleton-text animated="true" style="width: 100%"></ion-skeleton-text>
+            </h3>
+            <h4>
+              <ion-skeleton-text animated="true" style="width: 60%"></ion-skeleton-text>
+            </h4>
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div class="tab_content">
+    <ion-slides #slides (ionSlideDidChange)="slideChanged()">
+
+      <ion-slide *ngIf="!serverError">
+        <ion-list lines="none">
+          <ion-item class="animate__animated animate__fadeInUp" *ngFor="let product of products; let i = index">
+            <div class="item_inner d-flex">
+              <div class="img_box" (click)="variation_selection(i)">
+                <img src="{{ s3path + product.image.filePath }}">
+              </div>
+              <div class="text_box">
+                <h3 class="truncate">{{product.productName}}</h3>
+                <!-- <h4 *ngIf="product.sellingPrice">₹ {{product.sellingPrice}}</h4> -->
+                <p class="total-amount" *ngIf="product">
+                  <span class="currency"> ₹ </span> <strong> {{ product.sellingPrice | number:'1.0-2'}} </strong>
+                  <strong class="discount-frame" *ngIf="product.discount?.value &&  product.discount?.type"><span
+                      *ngIf="product.discount?.type == 'AMOUNT'"> Flat ₹ </span>{{product.discount?.value}}<span
+                      *ngIf="product.discount?.type == 'PERCENTAGE'">
+                      %
+                    </span></strong>
+                </p>
+                <p class="discount" *ngIf="product && product.discount?.value &&  product.discount?.type">
+                  <span class="main-frame">
+                    <span> <span class="currency"> ₹ </span> <strong> {{product.originalPrice | number:'1.0-2'}} </strong> </span>
+                  </span>
+                </p>
+                <div class="buttons d-flex">
+                  <h5 (click)="variation_selection(i)" *ngIf="product.offerUnit" class="background-color-dark">
+                    {{product.unitValue}} {{product.unit}} ({{product.offerUnit}})
+                  </h5>
+                  <h5 (click)="variation_selection(i)" *ngIf="!product.offerUnit" class="background-color-dark">
+                    {{product.unitValue}} {{product.unit}}
+                  </h5>
+
+                  <h6 class="end" *ngIf="!product.myCart  && storeInfo && storeInfo.isAvailable"
+                    (click)="addToCart(product._id, i)">{{'add' | translate}}</h6>
+                  <!--<h6 class="end">{{'add' | translate}}</h6>-->
+                  <p *ngIf="product.myCart && storeInfo && storeInfo.isAvailable === true" class="end">
+                    <span (click)="decrement(product.myCart.quantity, product._id, i)">-</span>
+                    <strong>{{product.myCart.quantity}}</strong>
+                    <!-- <input name="quantity" type="number" class="quantity__input" [value]="product.myCart.quantity" (change)="OnKeyUp($event, product._id, i)"> -->
+                    <span (click)="increment(product.myCart.quantity, product._id, i)">+</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </ion-item>
+          <ion-infinite-scroll threshold="90%" (ionInfinite)="loadData($event)">
+            <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+            </ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+        </ion-list>
+      </ion-slide>
+    </ion-slides>
+  </div>
+
+  <div *ngIf="serverError && !isLoadingStore !isLoadingOnlyProducts"
+    class="delivered animate__animated animate__fadeInUp, no_network">
+    <img src="../../assets/images/no_internet.gif">
+    <div class="delivered animate__animated animate__fadeInUp no_network_text">
+      <h6 class="top_margin">Could not connect to the internet.</h6>
+      <h6>Please check your network.</h6>
+      <h6> <a href="{{'tel:'+ 918558905905}}" style="text-decoration: none;">
+          <ion-icon class="zmdi zmdi-phone ion-text-end icon-padding"></ion-icon> Contact Support
+        </a></h6><br>
+      <div class="" (click)="refresh()"><a style="text-decoration: none;"><u>Refresh and try again</u></a></div>
+    </div>
+  </div>
+
+</ion-content>
+<ion-footer *ngIf="storeInfo && storeInfo.isAvailable">
+  <div *ngIf="totalCartCost && totalCartCost > 0 && !productDetailToggle && !serverError"
+    class="ion-no-border animate__animated animate__fadeInUp">
+    <div class="cart_btn" [routerLink]="['/cart', storeCustomId]">
+      <h2 class="d-flex">
+        <img src="assets/images/ic_cart_wt.png">&nbsp; &nbsp;
+        {{totalCartQuantity}} {{'items' | translate}} &nbsp;|&nbsp; ₹ {{totalCartCost | number:'1.2-2'}}
+        <span class="end">{{'view_cart' | translate}}</span>
+      </h2>
+    </div>
+  </div>
+  <!-- <div class="cart_btn"  *ngIf="productDetailToggle">
+      <h2 class="d-flex">
+     asdasdasdasd
+
+      </h2>
+  </div> -->
+
+
+
+
+
+</ion-footer>

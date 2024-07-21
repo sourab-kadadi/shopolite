@@ -1,0 +1,126 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defHref" text="" icon="chevron-back-outline"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{ mode == 'selection' ? 'Select Address': 'Manage Address' | translate}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="bg_color" fullscreen>
+
+  <div *ngIf="serverError && !isLoading" class="delivered animate__animated animate__fadeInUp, no_network">
+    <img src="../../assets/images/no_internet.gif">
+    <div class="delivered animate__animated animate__fadeInUp no_network_text">
+      <h6 class="top_margin">Could not connect to the server.</h6>
+      <h6>Please check your network.</h6>
+      <h6> <a href="{{'tel:'+918558905905}}" style="text-decoration: none;">
+          <ion-icon class="zmdi zmdi-phone ion-text-end icon-padding"></ion-icon> Contact Support
+        </a></h6><br>
+      <div class="" (click)="getAddress()"><a style="text-decoration: none;"><u>Refresh and try again</u></a></div>
+    </div>
+  </div>
+
+  <!-- skeleon text start -->
+  <ion-list lines="none">
+    <ion-button size="large" expand="outline" class="btn addButtonStyle" (click)="addNewAddress()">+
+      {{'add_new' | translate}}</ion-button>
+    <div *ngIf="isLoading">
+      <ion-item *ngFor="let number of [0,1]" class="animate__animated animate__fadeInUp">
+        <div class="item_inner d-flex">
+          <div class="img_box ion-text-center">
+            <ion-thumbnail slot="start" style="width: 45px; height: 45px">
+              <ion-skeleton-text animated="true" style="width: 45px; height: 45px"></ion-skeleton-text>
+            </ion-thumbnail>
+          </div>
+          <div class="text_box">
+            <h6>
+              <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+            </h6>
+            <p>
+              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+            </p>
+          </div>
+        </div>
+      </ion-item>
+    </div>
+  </ion-list>
+  <!-- skeleton text end -->
+  <ion-list lines="none">
+  </ion-list>
+  <ion-list lines="none">
+    <div *ngIf="!isLoading">
+      <ion-item *ngFor="let address of addressList" class="animate__animated animate__fadeInUp" (click)="onSelected($event, address)" [class.addressSelected]="address?._id === selectedAddress?._id">
+        <div class="item_inner d-flex" >
+          <div class="img_box ion-text-center">
+            <img *ngIf="address.tag == 'HOME'" src="assets/images/ic_homeadd_edited.png">
+            <img *ngIf="address.tag == 'OFFICE'" src="assets/images/ic_office_edited.png">
+            <img *ngIf="address.tag != 'HOME' && address.tag != 'OFFICE'" src="assets/images/ic_other_edited1.png">
+          </div>
+          <div class="text_box">
+            <h6>{{address?.fullName}}</h6>
+            <p> {{address?.buildingName}}</p>
+            <p>
+              {{address?.buildingNumber}}{{', ' + address?.area}}{{', ' + address?.landmark}}
+            </p>
+            <p>
+              {{address?.phoneNumber}}
+            </p>
+            <div class="action-button">
+              <ion-button slot="end" color="dark" fill="outline" (click)="confirmDeleteAddress(address._id)">
+                <ion-icon name="trash-outline"></ion-icon> Delete
+              </ion-button>
+              <ion-button slot="end" color="dark" fill="outline" (click)="editAddress(address)">
+                <ion-icon name="create-outline"></ion-icon> Edit
+              </ion-button>
+            </div>
+          </div>
+        </div>
+      </ion-item>
+    </div>
+  </ion-list>
+
+  <!-- <ion-list lines="none" *ngIf="mode == 'selection'">
+    <ion-item *ngFor="let address of addressList" class="animate__animated animate__fadeInUp"
+      (click)="onClickOnAddress(address)">
+      <div class="item_inner d-flex">
+        <div class="img_box ion-text-center">
+          <img *ngIf="address.tag == 'HOME'" src="assets/images/ic_homeadd_edited.png">
+          <img *ngIf="address.tag == 'OFFICE'" src="assets/images/ic_office_edited.png">
+          <img *ngIf="address.tag != 'HOME' && address.tag != 'OFFICE'" src="assets/images/ic_other_edited1.png">
+        </div>
+        <div class="text_box">
+          <h6>{{address?.fullName}}</h6>
+          <p> {{address?.buildingName}}</p>
+          <p>
+            {{address?.buildingNumber}}{{', ' + address?.area}}{{', ' + address?.landmark}}
+          </p>
+          <p>
+            {{address?.phoneNumber}}
+          </p>
+          <div *ngIf="mode != 'selection'" class="action-button">
+            <ion-button slot="end" color="dark" fill="outline" (click)="confirmDeleteAddress(address._id)">
+              <ion-icon name="trash-outline"></ion-icon> Delete
+            </ion-button>
+            <ion-button slot="end" color="dark" fill="outline" (click)="onClickOnAddress(address)">
+              <ion-icon name="create-outline"></ion-icon> Edit
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </ion-item>
+  </ion-list> -->
+</ion-content>
+
+<ion-footer *ngIf="selectedAddress" class="ion-no-border animate__animated animate__fadeInUp">
+  <ion-button size="large" expand="full" (click)="confirmSelectionAddress(selectedAddress)">
+    {{'Confirm' | translate}}</ion-button>
+
+</ion-footer> 

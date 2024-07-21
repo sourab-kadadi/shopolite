@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "716207147464",
+    "project_id": "shopolite-53037",
+    "storage_bucket": "shopolite-53037.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:716207147464:android:b53414b8b2f2611b8118fd",
+        "android_client_info": {
+          "package_name": "com.shopolite.seller"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "716207147464-p14mjnouqcdab51k9sdpn24lsrvghneb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdufUFvarf_CyOWE5TuT_KmHn-mYAhPd0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "716207147464-p14mjnouqcdab51k9sdpn24lsrvghneb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

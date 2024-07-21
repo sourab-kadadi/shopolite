@@ -1,0 +1,181 @@
+<ion-header>
+    <ion-toolbar>
+        <div class="toolbar_account_status">
+            <ion-title>{{'my_account' | translate}}</ion-title>
+            <!-- <div class="buttons d-flex "> -->
+            <!-- <div class="toggle_box in_stock end "> -->
+
+            <!-- <span>{{'Status' | translate}}</span>&nbsp;&nbsp; -->
+
+            <!-- <ion-toggle enableOnOffLabels="true" class="toggle_class" mode="ios"  [checked]="storeOnline" (ionChange)="onStoreOnlineStatusChange($event)">
+        </ion-toggle> -->
+
+            <ion-toggle enableOnOffLabels="true" class="toggle_class" mode="ios" [ngModel]="storeOnline"
+                (click)="onStoreOnlineStatusChange($event)">
+            </ion-toggle>
+        </div>
+        <!-- </div> -->
+        <!-- </div> -->
+    </ion-toolbar>
+    <div class="header-divide">
+        <div class="profile_info d-flex">
+            <div class="img_box center_img">
+                <ion-skeleton-text *ngIf="isLoading" animated="true" style="width: 100px; height: 100px">
+                </ion-skeleton-text>
+                <img *ngIf="!isLoading" src="{{s3path + logo}}" class="crop_img">
+            </div>
+            <div class="text_box">
+                <h2 class="animate__animated animate__fadeInUp">{{storeName}}</h2>
+                <p class="d-flex animate__animated animate__fadeInUp">
+                    <ion-skeleton-text *ngIf="isLoading" animated style="width: 25%"></ion-skeleton-text>
+                    <span *ngIf="!isLoading">{{place}}</span>
+                </p>
+                <div class="edit_share_buttons">
+                    <ion-button (click)="store_profile()">
+                        <ion-icon name="create-outline"></ion-icon> Edit Profile
+                    </ion-button>
+                    <ion-button (click)="basicShare()">
+                        <ion-icon name="share-social-outline"></ion-icon>
+                    </ion-button>
+                </div>
+                <!-- <div class="text_box">
+                    <h2 class="animate__animated animate__fadeInUp">{{storeName}}</h2>
+                    <p class="d-flex animate__animated animate__fadeInUp">
+                        <ion-skeleton-text *ngIf="isLoading" animated style="width: 25%"></ion-skeleton-text>
+                        <span *ngIf="!isLoading">{{place}}</span>
+                    </p>
+                    <div class="edit_share_buttons">
+                        <ion-button (click)="store_profile()">
+                            <ion-icon name="create-outline"></ion-icon> Edit Profile
+                        </ion-button>
+                        <ion-button (click)="basicShare()">
+                            <ion-icon name="share-social-outline"></ion-icon>
+                        </ion-button>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</ion-header>
+
+<ion-content fullscreen>
+
+
+    <ion-list lines="none">
+        <!-- <ion-item class="animate__animated animate__fadeInUp" (click)="insight()"> -->
+        <ion-item class="animate__animated animate__fadeInUp" (click)="editStoreTimings()">
+            <div class="item_inner d-flex">
+                <div class="icon_box ion-text-start">
+                    <!-- <img src="assets/images/ic_menu_insight.png"> -->
+                    <ion-icon name="time-outline"></ion-icon>
+                </div>
+                <h2>{{'Store Timings' | translate}}</h2>
+            </div>
+        </ion-item>
+        <!-- <ion-item class="animate__animated animate__fadeInUp">
+            <div class="item_inner d-flex">
+                <div class="icon_box ion-text-start">
+                    <img src="assets/images/ic_menu_insight.png">
+                </div>
+                <h2>{{'insight' | translate}} (Coming Soon)</h2>
+            </div>
+        </ion-item> -->
+
+        <ion-item class="animate__animated animate__fadeInUp" (click)="requestProductList()">
+            <div class="item_inner d-flex">
+                <div class="icon_box ion-text-start">
+                    <!-- <img src="assets/images/ic_menu_insight.png"> -->
+                    <ion-icon name="prism-outline"></ion-icon>
+                </div>
+                <h2>{{'Request Product' | translate}}</h2>
+            </div>
+        </ion-item>
+
+        <!-- <ion-item class="animate__animated animate__fadeInUp" (click)="wallet()">
+            <div class="item_inner d-flex">
+                <div class="icon_box ion-text-start">
+                    <img src="assets/images/ic_menu_wallet.png">
+                </div>
+                <h2>{{'wallet' | translate}}</h2>
+            </div>
+        </ion-item> -->
+
+        <!-- <ion-item class="animate__animated animate__fadeInUp" (click)="reviews()">
+            <div class="item_inner d-flex">
+                <div class="icon_box ion-text-start">
+                    <img src="assets/images/ic_menu_reviewact.png">
+                </div>
+                <h2>{{'my_reviews' | translate}}</h2>
+            </div>
+        </ion-item> -->
+
+
+
+
+
+        <ion-item class="animate__animated animate__fadeInUp">
+            <a href="https://wa.me/message/GUAI6HD4GWNHG1" style="text-decoration: none;" class="d_flex_adjusted">
+            <div class="item_inner d-flex">
+                <div class="icon_box ion-text-start">
+                    <!-- <img src="assets/images/ic_menu_supportact.png"> -->
+                    <ion-icon name="chatbubbles-outline"></ion-icon>
+                </div>
+                <h2>{{'support' | translate}}</h2>
+             
+            </div>
+        </a>
+        </ion-item>
+
+        <ion-item class="animate__animated animate__fadeInUp" (click)="settings()">
+            <div class="item_inner d-flex">
+                <div class="icon_box ion-text-start">
+                    <!-- <img src="assets/images/ic_menu_setting.png"> -->
+                    <ion-icon name="cog-outline"></ion-icon>
+                </div>
+                <h2>{{'settings' | translate}}</h2>
+            </div>
+        </ion-item>
+        <!--
+        <ion-item class="animate__animated animate__fadeInUp" (click)="about_us()">
+            <div class="item_inner d-flex">
+                <div class="icon_box ion-text-start">
+                    <img src="assets/images/ic_menu_aboutact.png">
+                </div>
+                <h2>{{'about_us' | translate}}</h2>
+            </div>
+        </ion-item>
+-->
+
+        <!--
+        <ion-item class="animate__animated animate__fadeInUp" (click)="select_language()">
+            <div class="item_inner d-flex">
+                <div class="icon_box ion-text-start">
+                    <img src="assets/images/ic_menu_aboutact.png">
+                </div>
+                <h2>{{'change_language' | translate}}</h2>
+            </div>
+        </ion-item>
+-->
+        <ion-item class="animate__animated animate__fadeInUp" (click)="terms_conditions()">
+            <div class="item_inner d-flex">
+                <div class="icon_box ion-text-start">
+                    <!-- <img src="assets/images/ic_menu_tncact.png"> -->
+                    <ion-icon name="newspaper-outline"></ion-icon>
+                </div>
+                <h2>{{'terms_conditions' | translate}}</h2>
+            </div>
+        </ion-item>
+        <ion-item class="animate__animated animate__fadeInUp" (click)="phone_number()">
+            <div class="item_inner d-flex">
+                <div class="icon_box ion-text-start">
+                    <!-- <img src="assets/images/ic_menu_logoutact.png"> -->
+                    <ion-icon name="log-out-outline"></ion-icon>
+                </div>
+                <h2>{{'logout' | translate}}</h2>
+            </div>
+        </ion-item>
+    </ion-list>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+</ion-footer>

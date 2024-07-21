@@ -1,0 +1,314 @@
+ion-header {
+    background: var(--white);
+
+    .search_box {
+        width: calc(100% - 42px);
+        margin: 0 auto;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        height: 59px;
+        position: relative;
+        background: var(--bg-color);
+        border-radius: 50px;
+        padding: 0 16px;
+        --animate-duration: .2s !important;
+
+        ion-icon {
+            color: var(--text-black);
+            font-size: 1.35rem;
+            min-width: 30px;
+            height: 30px;
+            line-height: 30px;
+            z-index: 99;
+            padding: 0 2px;
+        }
+
+        ion-searchbar {
+            --background: var(--transparent) !important;
+            --color: var(--text-black);
+            --placeholder-opacity: 1;
+            --placeholder-color: var(--text-light);
+            --placeholder-font-weight: 500 !important;
+            --box-shadow: none !important;
+        }
+    }
+}
+
+ion-list {
+    margin: 0;
+    background: none;
+    padding: 25px 20px 0 20px;
+
+    h2 {
+        margin: 0;
+        color: var(--text-light);
+        font-size: .9rem;
+        padding-bottom: 20px;
+    }
+
+    ion-item {
+        --inner-padding-end: 0px;
+        --inner-min-height: unset !important;
+        --padding-start: 0;
+        --background: var(--transparent) !important;
+        background: var(--white);
+        margin-bottom: 20px;
+
+        .item_inner {
+            align-items: flex-start !important;
+
+            .img_box {
+                min-width: 97px;
+                height: 97px;
+                margin-right: 12px;
+                border-radius: 3px;
+            }
+
+            .text_box {
+                width: 100%;
+
+                h3 {
+                    margin: 0;
+                    font-size: 1rem;
+                    color: var(--text-black);
+                    padding-bottom: 6px;
+                }
+
+                h4 {
+                    margin: 0;
+                    color: var(--text-light);
+                    font-size: .7rem;
+                    font-weight: 400;
+                    margin-bottom: 7px;
+                    letter-spacing: .3px;
+
+                    span {
+                        display: block;
+                        min-width: 20px;
+                        text-align: center;
+                        color: var(--primary);
+                    }
+
+                    ion-icon {
+                        min-width: 16px;
+                        padding: 0 2px;
+                        font-size: .8rem;
+                    }
+                }
+
+                h5 {
+                    margin: 0;
+                    color: var(--primary);
+                    font-size: .73rem;
+                    font-weight: 400;
+                    margin-bottom: 7px;
+                    letter-spacing: .3px;
+
+                    ion-icon {
+                        min-width: 16px;
+                        padding: 0 2px;
+                        font-size: .8rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
+.item-list {
+    color: white;
+    cursor: pointer;
+    position: relative;
+    width: 100%;
+    .item-details {
+        color: #fff;
+        position: absolute;
+        right: 14px;
+        top: 14px;
+        font-size: 11px;
+        font-weight: 900;
+        z-index: 2;
+        span.break {
+            display: block;
+            font-size: 9px;
+          }
+      }
+
+      .item-details-left {
+        color: black;
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 20px;
+        font-weight: 900;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;  
+        span.break {
+            display: block;
+            font-size: 9px;
+          }
+      }
+
+      .itemMainImg {
+        overflow: hidden;
+        border: 2px solid transparent;
+        border-radius: 20px;
+        margin: 0;
+        padding: 0;
+        background: #fff;
+        img {
+            max-width: 100%;
+            width: 100%;
+            height: 180px;
+            border: 4px solid transparent;
+            border-radius: 20px;
+            -webkit-transition: 0.3s ease-in-out;
+            transition: 0.3s ease-in-out;
+        }
+      }
+}
+
+  .item-list-logo {
+    overflow: hidden;
+    position: absolute;
+    top: 13px;
+    left: 13px;
+    width: 33%;
+    height: 65px;
+    padding: 0px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 2px solid white;
+    border-radius: 10px;
+  }
+
+  .shopName {
+    position: absolute;
+    bottom: 11px;
+    right: 6px;
+    color: #eb445a;
+    font-size: 25px;
+    background: #222428;
+    padding: 10px;
+    max-width: 75%;
+    border-radius: 25px 0px 15px 7px;
+    .shopText {
+        font-size: 12px;
+        font-weight: 900;
+      }
+  }
+
+  .textWhiteColor {
+    color: #fff !important;
+  }
+
+  .kmDisaplay {
+    position: absolute;
+    left: 17px;
+    bottom: 20px;
+    .circle {
+        text-align: center;
+        border: 2px solid var(--primary);;
+        padding: 7px 9px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 900;
+        line-height: 1;
+        background: #00000057;
+        span.break {
+            display: block;
+            font-size: 9px;
+          }
+      }
+  }
+
+  .overlay {
+    z-index: 9;
+    overflow: hidden;
+    border: 2px solid transparent;
+    border-radius: 20px;
+    margin: 0;
+    padding: 0;
+    background: #00993830;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .no_network{
+    margin-top: 4em;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  .no_network_text{
+    margin-left: 3em;
+    margin-right: 3em;
+    margin-top: -5em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    h6 {
+      font-weight:100;
+      color: #828282;
+  font-size:14px;
+      margin-bottom: 0em;
+    }
+    a {
+      color: #c2566a;
+      .icon-padding {
+        padding-right:10px;
+      }
+    }
+  }
+
+  .offline {
+    width: 18%;
+    padding: 4px;
+    color: #fff;
+    border-radius: 0 15px 15px 0;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    position: absolute;
+    top: 14px;
+    left: -14px;  
+    margin-left: 10px;
+    background-color: #766868;
+    z-index: 1;
+  }
+  
+  .list-badge h3::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    left: 0px;
+    top: -10px;
+    -webkit-filter: brightness(85%);
+    filter: brightness(85%);
+  }
+
+  .list-badge h3::before {
+    background-image: linear-gradient(
+      135deg,
+      transparent 50%,
+      #766868  50%
+    );
+  }
+
+
+.isStoreClosed {
+  // opacity: 0.5;
+  filter: grayscale(80%);
+    -webkit-filter: grayscale(80%);
+}

@@ -1,0 +1,22 @@
+<ion-content class="ion-padding">
+  <div class="ion-margin-top">
+    <div class="couponDetails">
+    <div class="title">
+      <h6>Discount Details</h6>
+    </div>
+    <div class="subDesc">
+      <div class="discountData">
+        {{data?.code}}
+      </div>
+      <div class="copyCoupon" (click)="copyToClipBoard(data?.code)">
+        Copy Code
+      </div>
+    </div>
+    <div class="couponTitle">
+      <h6>{{data.title}}</h6>
+    </div>
+    <div class="couponContent" [innerHtml]="data?.description">
+    </div>
+    </div>
+  </div>
+</ion-content>

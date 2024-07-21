@@ -1,0 +1,376 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/master-catalog"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center header-margin-left"
+      >Excel Error Product</ion-title
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ngx-ui-loader [loaderId]="'loader-excel-error'" class="full"></ngx-ui-loader>
+  <!-- <ion-grid *ngIf="isActive"> -->
+
+  <ion-label class="left-align-total"
+    >Total Remaining: {{this.totalRemaining}}</ion-label
+  >
+  <ion-grid>
+    <ion-col size="6" size-md="6">
+      <ion-item>
+        <ion-label>Category</ion-label>
+        <ionic-selectable
+          #selectComponentCategory
+          item-content
+          [(ngModel)]="itemCat"
+          itemValueField="_id"
+          itemTextField="name"
+          [items]="categoriesData"
+          [canSearch]="true"
+          (onChange)="itemChangeCategory($event)"
+        >
+        </ionic-selectable>
+      </ion-item>
+      <ion-item>
+        <ion-label>Sub Category</ion-label>
+        <ionic-selectable
+          #selectComponentSubCat
+          item-content
+          [(ngModel)]="itemSubCat"
+          itemValueField="_id"
+          itemTextField="name"
+          [items]="subCategoriesData"
+          [canSearch]="true"
+          (onChange)="itemChangeSubCat($event)"
+        >
+        </ionic-selectable>
+      </ion-item>
+    </ion-col>
+
+    <form [formGroup]="catalogForm" (ngSubmit)="createCatalog()">
+      <!-- <ion-item>
+    <ion-label mode="md" position="stacked">Category</ion-label>
+        <ion-select formControlName="categoryName" (ionChange)="itemChangeCategory($event)">
+            <ion-select-option  *ngFor="let categoryName of categoriesData" [value]="categoryName" >{{categoriesData.name}}</ion-select-option>
+        </ion-select>
+        <ion-icon class="zmdi zmdi-chevron-down ion-text-end end"></ion-icon>
+</ion-item> -->
+
+      <ion-item>
+        <ion-col size="6" size-md="6">
+          <!-- <ion-col size="6"> -->
+
+          <!-- <ion-col size="6" size-md="6"> -->
+
+          <ion-item class="Form-Item">
+            <ion-label class="ion-label" position="floating"
+              >Product Name<span class="reqired-field">*</span>
+            </ion-label>
+            <ion-input
+              type="text"
+              formControlName="name"
+              placeholder="Product Name"
+            ></ion-input>
+            <ion-note
+              *ngIf="
+              !catalogForm.get('name').valid && catalogForm.get('name').touched"
+              color="danger"
+              position="fixed"
+              class="ion-padding"
+            >
+              please enter data.
+            </ion-note>
+          </ion-item>
+
+          <ion-item class="Form-Item">
+            <ion-label class="ion-label" position="floating"
+              >Brand Name<span class="reqired-field">*</span>
+            </ion-label>
+            <ion-input
+              type="text"
+              formControlName="brandName"
+              placeholder="Brand Name"
+            ></ion-input>
+            <ion-note
+              *ngIf="
+              !catalogForm.get('brandName').valid && catalogForm.get('brandName').touched"
+              color="danger"
+              position="fixed"
+              class="ion-padding"
+            >
+              please enter data.
+            </ion-note>
+          </ion-item>
+
+          <ion-item class="Form-Item">
+            <ion-label class="ion-label" position="floating"
+              >Quantity(Unit Value)<span class="reqired-field">*</span>
+            </ion-label>
+            <ion-input
+              type="number"
+              formControlName="unitValue"
+              placeholder="Unit Value of Quantity"
+            ></ion-input>
+            <ion-note
+              *ngIf="
+              !catalogForm.get('unitValue').valid && catalogForm.get('unitValue').touched"
+              color="danger"
+              position="fixed"
+              class="ion-padding"
+            >
+              please enter data.
+            </ion-note>
+          </ion-item>
+
+          <ion-item class="Form-Item">
+            <ion-label class="ion-label" position="floating"
+              >Quantity(Unit)<span class="reqired-field">*</span>
+            </ion-label>
+            <ion-input
+              type="text"
+              formControlName="unit"
+              placeholder="Unit of Quantity"
+            ></ion-input>
+            <ion-note
+              *ngIf="
+              !catalogForm.get('unit').valid && catalogForm.get('unit').touched"
+              color="danger"
+              position="fixed"
+              class="ion-padding"
+            >
+              please enter data.
+            </ion-note>
+          </ion-item>
+
+          <ion-item class="Form-Item">
+            <ion-label class="ion-label" position="floating"
+              >Quantity(MultiPack)<span class="reqired-field">*</span>
+            </ion-label>
+            <ion-input
+              type="text"
+              formControlName="offerUnit"
+              placeholder="MultiPack"
+            ></ion-input>
+            <ion-note
+              *ngIf="
+              !catalogForm.get('offerUnit').valid && catalogForm.get('offerUnit').touched"
+              color="danger"
+              position="fixed"
+              class="ion-padding"
+            >
+              please enter data.
+            </ion-note>
+          </ion-item>
+
+          <form [formGroup]="keyWordForm">
+            <ion-item class="Form-Item">
+              <ion-label class="ion-label" position="floating"
+                >Keyword<span class="reqired-field">*</span>
+              </ion-label>
+              <ion-input
+                type="text"
+                formControlName="name"
+                placeholder="KeyWord"
+              ></ion-input>
+              <!-- <ion-note *ngIf="
+      !catalogForm.get('name').valid && catalogForm.get('name').touched" color="danger" position="fixed"
+      class="ion-padding">
+      please enter data.
+    </ion-note> -->
+            </ion-item>
+
+            <!-- <ion-item>
+    <ion-label>Key Word</ion-label>
+    <ionic-selectable #selectComponentKeyWord item-content [(ngModel)]="itemKeyWord" itemValueField="_id" itemTextField="name" [items]="this.keyWordsArray"
+      [canSearch]="true" (onChange)="itemChangeCategory($event)">
+    </ionic-selectable>
+  </ion-item>
+  <ion-item> -->
+          </form>
+
+          <ion-item class="Form-Item">
+            <ion-label class="ion-label" position="floating"
+              >MRP<span class="reqired-field">*</span>
+            </ion-label>
+            <ion-input
+              type="text"
+              formControlName="originalPrice"
+              placeholder="MRP"
+              [readonly] = true
+            ></ion-input>
+            <ion-note
+              *ngIf="
+              !catalogForm.get('originalPrice').valid && catalogForm.get('originalPrice').touched"
+              color="danger"
+              position="fixed"
+              class="ion-padding"
+            >
+              please enter data.
+            </ion-note>
+          </ion-item>
+
+          <ion-item class="Form-Item">
+            <ion-label class="ion-label" position="floating"
+              >Barcode<span class="reqired-field">*</span>
+            </ion-label>
+            <ion-input
+              type="number"
+              formControlName="barcode"
+              placeholder="Barcode"
+              [readonly] = true
+            ></ion-input>
+            <ion-note
+              *ngIf="
+              !catalogForm.get('barcode').valid && catalogForm.get('barcode').touched"
+              color="danger"
+              position="fixed"
+              class="ion-padding"
+            >
+              please enter data.
+            </ion-note>
+          </ion-item>
+
+          <ion-item class="status-design Form-Item">
+            Display Product ?
+            <ion-toggle formControlName="status" color="primary"></ion-toggle>
+          </ion-item>
+          <!-- </ion-card> -->
+          <!-- </ion-col> -->
+
+          <!-- <ion-card class="padding-card"> -->
+
+          <!-- image component -->
+          <div class="row" class="profilePic">
+            <label for="uploadImage">
+              <div *ngIf="imageData && imageData.filePath" class="imageMainDisplay">
+                <img
+                  width="300px"
+                  height="300px"
+                  src="{{ s3path + imageData.filePath }}"
+                />
+                <ion-button
+                  class="material-icons cancelButton"
+                  color="danger"
+                  (click)="deleteFile()"
+                >
+                  <ion-icon name="trash-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </label>
+            <div *ngIf="!(imageData && imageData.filePath)">
+              <label for="uploadImage">
+                <div class="initImgMain">
+                  <!-- <span class="material-icons"> icon </span> -->
+                  <ion-icon class="icon-size" name="image-outline"></ion-icon>
+                  <br />
+                  <p>Select Catalog Front Image</p>
+                </div>
+              </label>
+            </div>
+          </div>
+          <input
+            type="file"
+            name="uploadImage"
+            id="uploadImage"
+            (change)="uploadFileToS3($event, false)"
+            accept=".png, .jpg, .jpeg"
+          />
+
+          <!-- display -->
+          <ion-item *ngFor="let img of mediaData; let i = index">
+            <div class="imageDisplay">
+              <img [src]="s3path + img.filePath" />
+            </div>
+            <div>
+              <ion-fab-button
+                color="danger"
+                size="small"
+                horizontal="end"
+                slot="fixed"
+                (click)="deleteFileMedia(i)"
+              >
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-fab-button>
+            </div>
+          </ion-item>
+          <!-- display end -->
+
+          <!-- image component Media array -->
+          <!-- <div class="row" class="profilePic">
+              <label for="uploadImage">
+                <div *ngIf="mediaData && mediaData.filePath" class="imageMain">
+                  <img width="300px" height="300px" src="{{ s3path + mediaData.filePath }}" />
+                  <ion-button class="material-icons cancelButton" color="danger" (click)="deleteFileMedia(i)">
+                    <ion-icon name="trash-outline"></ion-icon>
+                  </ion-button>
+                </div> -->
+          <!-- </label> -->
+          <!-- <div *ngIf="!(mediaData)"> -->
+          <label for="uploadImage1">
+            <div class="initImgMain">
+              <ion-icon class="icon-size" name="image-outline"></ion-icon>
+              <br />
+              <p>Select Catalog Images</p>
+            </div>
+          </label>
+          <!-- </div> -->
+          <!-- </div> -->
+          <input
+            type="file"
+            name="uploadImage1"
+            id="uploadImage1"
+            (change)="uploadFileToS3($event, true)"
+            accept=".png, .jpg, .jpeg"
+          />
+        </ion-col>
+        <ion-col size="6" size-md="6" class="images-margin-top">
+          <!-- <ion-text>{{this.ref}}</ion-text> -->
+          <ion-text>Product saved by store: {{this.storeProductName}}</ion-text>
+
+          <ion-text
+            >Reference Name <br />
+            {{this.referenceName}}</ion-text
+          >
+
+          <br />
+          <ion-text class="message" >Error Message <br />{{this.errorMessage}}</ion-text>
+
+          <!-- <div *ngIf="imagesExcels && imagesExcel.length>0" class="imageMain"> -->
+          <ion-item *ngFor="let img of imagesExcel; let i = index">
+            <div class="imageDisplay" *ngIf="img !== undefined">
+              <a href="{{img}}" target="_blank"
+                ><img width="300px" height="300px" [src]="img"
+              /></a>
+            </div>
+          </ion-item>
+        </ion-col>
+      </ion-item>
+
+      <ion-row>
+        <!-- <ion-col size="6" size-md="6">
+            <ion-button color="danger" class="buttom-margin-left"> -->
+        <!-- <ion-icon name="checkmark" slot="icon-only"> </ion-icon> -->
+        <!-- Reset Form
+            </ion-button>
+          </ion-col> -->
+
+        <ion-col>
+          <ion-button
+            type="submit"
+            [disabled]="!catalogForm.valid"
+            expand="full"
+          >
+            <!-- <ion-icon name="checkmark" slot="icon-only"> </ion-icon> -->
+            Create Catalog
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <!-- </ion-col> -->
+    </form>
+  </ion-grid>
+
+  <!-- [(ngModel)]="location" -->
+
+  <!-- <app-image-upload [imageData]="image" (onSave)="saveImage($event)" ></app-image-upload> -->
+</ion-content>

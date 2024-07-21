@@ -1,0 +1,268 @@
+<form #documentEditForm="ngForm" [formGroup]="productForm" (ngSubmit)="submitForm()">
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button [defaultHref]="defaultRef" text="" icon="chevron-back-outline"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+          <div class="title_inner d-flex">
+            {{'Request Product' | translate}}
+          </div>
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+  
+    <ion-content class="bg_color item-list" fullscreen>
+      <ion-list lines="none">
+  
+        <ion-item class="feature_image animate__animated animate__fadeInUp">
+          <div class="item_inner">
+            <h2>{{'item_info' | translate}}</h2>
+            <div class="d-flex" style="align-items: flex-start;">
+              <div class="center_img image-upload">
+                  <div>
+                  <app-image-upload class="logoImagePosition"
+                    [idFor]="'1'"
+                    [title]="'logo'"
+                    [icon]="'image'"
+                    [imageData]="logo"
+                    [height]="'100px'"
+                    [width] ="'100px'"
+                    (onSave)="productImage($event)"
+                  ></app-image-upload>
+                  </div>
+                <!-- </ion-col> -->
+              </div>
+              <div class="text_box">
+                <p class="product-name">{{catalog.name}}</p>
+                <p class="sub-title">{{catalog.brandName}}</p>
+                <p class="total-amount">
+                  <span class="currency"> ₹ </span> <strong> {{sellingValue}} </strong>
+                  <strong
+                    class="discount-frame"
+                    *ngIf="productForm.get('discount').get('value').value && productForm.get('discount').get('type').value"
+                    ><span
+                    *ngIf="productForm.get('discount').get('value').value && productForm.get('discount').get('type').value == 'AMOUNT'"
+                  >
+                    Flat ₹
+                  </span>{{productForm.get('discount').get('value').value}}<span
+                      *ngIf="productForm.get('discount').get('value').value && productForm.get('discount').get('type').value == 'PERCENTAGE'"
+                    >
+                      %
+                    </span></strong
+                  >
+                </p>
+                <p
+                  class="discount"
+                  *ngIf="productForm.get('discount').get('value').value && productForm.get('discount').get('type').value"
+                >
+                  <span class="main-frame">
+                    <span> <span class="currency"> ₹ </span> <strong> {{productForm.get('originalPrice').value}} </strong> </span>
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </ion-item>
+  
+        <div class="form item_price animate__animated animate__fadeInUp">
+          <h2>{{'item_price' | translate}}</h2>
+          <ion-row class="animate__animated animate__fadeInUp">
+            <ion-col size="12">
+              <ion-item lines="none">
+                <div class="item_inner d-flex">
+                  <div class="input_custome_box">
+                    <ion-label mode="md" position="stacked" class="ion-text-start"
+                      >{{"Barcode" | translate}}</ion-label
+                    >
+                    <input
+                      class="form__input"
+                      placeholder="ex: 89100112330411"
+                      formControlName="barcode"
+                    />
+                    <ion-button class="barcode-button" (click)="getBarCode()"><ion-icon name="barcode-outline"></ion-icon></ion-button>
+                  </div>
+                </div>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12">
+              <ion-item lines="none">
+                <div class="item_inner d-flex">
+                  <div class="input_custome_box">
+                    <ion-label mode="md" position="stacked" class="ion-text-start"
+                      >{{"Select Category" | translate}}</ion-label
+                    >
+                    <ion-select
+                      class="selctionPlaceHolder form__input"
+                      placeholder="Category"
+                      formControlName="category"
+                      (ionChange) = "onCategorySelection($event)"
+                    >
+                      <ion-select-option *ngFor="let catrgory of categories" [value]="catrgory">{{catrgory.name}}</ion-select-option>
+                    </ion-select>
+                  </div>
+                </div>
+              </ion-item>
+            </ion-col>
+
+            <ion-col size="12">
+              <ion-item lines="none">
+                <div class="item_inner d-flex">
+                  <div class="input_custome_box">
+                    <ion-label mode="md" position="stacked" class="ion-text-start"
+                      >{{"Select Sub-Category" | translate}}</ion-label
+                    >
+                    <!-- <ion-input mode="md" type="number" formControlName="unitValue" class="ion-text-end" placeholder="{{'enter_quantity' | translate}}"></ion-input> -->
+                    <!-- <input type="text" class="form__input" placeholder="{{catalog.unit}}" [disabled]="true" formControlName="type"> -->
+                    <ion-select
+                      class="selctionPlaceHolder form__input"
+                      placeholder="Sub-Category"
+                      formControlName="subCategory"
+                    >
+                      <ion-select-option *ngFor="let subCategory of subCategories" [value]="subCategory">{{subCategory.name}}</ion-select-option>
+                    </ion-select>
+                  </div>
+                </div>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item lines="none">
+                <div class="item_inner d-flex">
+                  <div class="input_custome_box">
+                    <ion-label mode="md" position="stacked" class="ion-text-start"
+                      >{{"Brand Name" | translate}}</ion-label
+                    >
+                    <input
+                      class="form__input"
+                      placeholder="ex: 89100112330411"
+                      formControlName="brandName"
+                    />
+                  </div>
+                </div>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item lines="none">
+                <div class="item_inner d-flex">
+                  <div class="input_custome_box">
+                    <ion-label mode="md" position="stacked" class="ion-text-start"
+                      >{{"Product Name" | translate}}</ion-label
+                    >
+                    <input
+                      class="form__input"
+                      placeholder="ex: 89100112330411"
+                      formControlName="name"
+                    />
+                  </div>
+                </div>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12">
+              <ion-item lines="none">
+                <div class="item_inner d-flex">
+                  <div class="input_custome_box">
+                    <ion-label mode="md" position="stacked">{{"item_price" | translate}}</ion-label>
+                    <input
+                      type="text"
+                      class="form__input"
+                      placeholder="{{catalog.unit}}"
+                      formControlName="originalPrice"
+                      (change)="caluclateSellingPrice()"
+                    />
+  
+                    <!-- <ion-input class="form__input" class="" mode="md" type="number" formControlName="sellingPrice" placeholder="{{'enter_price' | translate}}" ></ion-input> -->
+                  </div>
+                </div>
+              </ion-item>
+            </ion-col>
+            <ion-row>
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <div class="item_inner d-flex">
+                    <div class="input_custome_box">
+                      <ion-label mode="md" position="stacked" class="ion-text-start"
+                        >{{"Unit Value" | translate}}</ion-label
+                      >
+                      <!-- <ion-input mode="md" type="number" formControlName="unitValue" class="ion-text-end" placeholder="{{'enter_quantity' | translate}}"></ion-input> -->
+                      <input
+                        type="number"
+                        class="form__input"
+                        placeholder="ex: 200"
+                        formControlName="unitValue"
+                        (change)="caluclateSellingPrice()"
+                      />
+                    </div>
+                  </div>
+                </ion-item>
+              </ion-col>
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <div class="item_inner d-flex">
+                    <div class="input_custome_box">
+                      <ion-label mode="md" position="stacked" class="ion-text-start"
+                        >{{"Unit" | translate}}</ion-label
+                      >
+                      <input
+                        class="form__input"
+                        placeholder="ex: kg"
+                        formControlName="unit"
+                        (change)="caluclateSellingPrice()"
+                      />
+                    </div>
+                  </div>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row formGroupName="discount">
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <div class="item_inner d-flex">
+                    <div class="input_custome_box">
+                      <ion-label mode="md" position="stacked" class="ion-text-start"
+                        >{{"Discount" | translate}}</ion-label
+                      >
+                      <!-- <ion-input mode="md" type="number" formControlName="unitValue" class="ion-text-end" placeholder="{{'enter_quantity' | translate}}"></ion-input> -->
+                      <input
+                        type="number"
+                        class="form__input"
+                        placeholder="{{catalog.unit}}"
+                        formControlName="value"
+                        (change)="caluclateSellingPrice()"
+                      />
+                    </div>
+                  </div>
+                </ion-item>
+              </ion-col>
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <div class="item_inner d-flex">
+                    <div class="input_custome_box">
+                      <ion-label mode="md" position="stacked" class="ion-text-start"
+                        >{{"Discount Type" | translate}}</ion-label
+                      >
+                      <ion-select
+                        class="selctionPlaceHolder form__input"
+                        placeholder="Dicount Type"
+                        formControlName="type"
+                        (ionChange)="caluclateSellingPrice()"
+                      
+                      >
+                        <ion-select-option *ngFor="let type of discountType" [value]="type.value">{{type.key}}</ion-select-option>
+                      </ion-select>
+                    </div>
+                  </div>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-row>
+          <!-- <h6 class="ion-text-end">{{sellingValue}}</h6> -->
+        </div>
+      </ion-list>
+    </ion-content>
+  </form>
+
+  <ion-footer class="ion-no-border animate__animated animate__fadeInUp">
+    <ion-button size="large" expand="full" class="btn" type="submit" (click)="documentEditForm.ngSubmit.emit()"
+      >{{'Add Product' | translate}}</ion-button
+    >
+  </ion-footer>

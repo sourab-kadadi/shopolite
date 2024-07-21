@@ -1,0 +1,97 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start"> <ion-back-button text="" icon="chevron-back-outline"></ion-back-button> </ion-buttons>
+    <ion-title>
+      <div class="title_inner d-flex" (click)="searchItem()">
+        <span>{{'my_products' | translate}}</span>
+        <ion-icon class="zmdi zmdi-search end ion-text-end"></ion-icon>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+  <div class="buttons d-flex " *ngIf="isStoreInventorty">
+    <div class="toggle_box in_stock end ">
+      <span>{{'My Inventory' | translate}}</span>&nbsp;&nbsp;
+      <ion-toggle mode="ios" [checked]="onlyMyProducts" (ionChange)="onOnlyMyProductsStatusChange($event)" ></ion-toggle>
+    </div>
+  </div>
+  <div [hidden]="isSearchBar" class="search_box animate__animated animate__zoomIn">
+    <ion-icon class="zmdi zmdi-search ion-text-start"></ion-icon>
+    <ion-searchbar
+      [(ngModel)]="filter.search"
+      class="ion-no-padding"
+      searchIcon="hide"
+      placeholder="{{'search_product' | translate}}"
+      (ionChange)="onChangeSearch($event)"
+    ></ion-searchbar>
+  </div>
+  <ion-segment mode="ios" (ionChange)="segmentChanged()" [(ngModel)]="segment" scrollable>
+    <ion-segment-button *ngFor="let subCat of subCategory" mode="ios" [value]="subCat._id">
+      <ion-label>{{subCat.name}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content>
+  <div class="tab_content">
+    <ion-slides #slides (ionSlideDidChange)="slideChanged()">
+      <ion-slide>
+        <ion-list lines="none">
+          <ion-item *ngFor="let product of products; let i = index" class="animate__animated animate__fadeInUp">
+            <div class="item_inner d-flex">
+              <div class="img_box" (click)="edit_product(product._id)"><img src="{{ s3path + product.image.filePath }}" /></div>
+              <div class="text_box">
+                <h3 class="truncate padding-10" (click)="edit_product(product._id)">{{product.name}}</h3>
+                <!-- <h4 (click)="edit_product(product._id)" *ngIf="product.myProduct"> ₹ {{product.myProduct?.sellingPrice}}</h4> -->
+                <div class="end padding-10">
+                    <p class="total-amount" *ngIf="product.myProduct">
+                        <span class="currency"> ₹ </span> <strong> {{ product.myProduct.sellingPrice}} </strong>
+                        <strong class="discount-frame" *ngIf="product.myProduct.discount?.value &&  product.myProduct.discount?.type"
+                          ><span *ngIf="product.myProduct.discount?.type == 'AMOUNT'"> Flat ₹ </span
+                          >{{product.myProduct.discount?.value}}<span *ngIf="product.myProduct.discount?.type == 'PERCENTAGE'">
+                            %
+                          </span></strong
+                        > 
+                      </p>
+                      <p
+                        class="discount"
+                        *ngIf="product.myProduct && product.myProduct.discount?.value &&  product.myProduct.discount?.type"
+                      >
+                        <span class="main-frame">
+                          <span> <span class="currency"> ₹ </span> <strong> {{product.myProduct.originalPrice}} </strong> </span>
+                        </span>
+                      </p>
+                </div>
+
+                <div class="buttons d-flex">
+                  <h5 (click)="edit_product(product._id)" *ngIf="product.myProduct">
+                    {{product.myProduct?.unitValue}} {{product.myProduct?.unit}}
+                    <ion-icon class="zmdi zmdi-chevron-down ion-text-end"></ion-icon>
+                  </h5>
+                  <div *ngIf="product.myProduct" class="toggle_box end" [ngClass]="{'in_stock': product.myProduct?.status}">
+                    <span *ngIf="product.myProduct?.status">{{'in_stock' | translate}}</span>&nbsp;&nbsp;
+                    <span *ngIf="!product.myProduct?.status">{{'out_of_stock' | translate}}</span>&nbsp;&nbsp;
+                    <ion-toggle
+                      [checked]="product.myProduct?.status"
+                      (ionChange)="onStatusChange($event, i, product.myProduct?._id)"
+                      mode="ios"
+                    ></ion-toggle>
+                  </div>
+                  <div *ngIf="!product.myProduct">
+                    <ion-button class="padding-10" (click)="edit_product(product._id)">Add to my stock</ion-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ion-item>
+        </ion-list>
+      </ion-slide>
+    </ion-slides>
+  </div>
+
+  <ion-fab class="animate__animated animate__zoomIn" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="add_product()"> <span>+</span> </ion-fab-button>
+  </ion-fab>
+  <ion-infinite-scroll threshold="85%" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data..."> </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

@@ -1,0 +1,23 @@
+// .img_box {
+//   min-width: 97px;
+//   max-width: 97px;
+//   height: 97px;
+//   margin-right: 12px;
+//   display: flex;
+//   align-items: center;
+//   img {
+//       display: block;
+//       margin: auto;
+//       width: 95px;
+//   }
+// }
+
+ion-img{
+  // //   --size: 4em;  // this should take effect but doesn't
+  // //   --border-radius: 12px;
+    width: 75px !important;
+    height: 100% !important;
+  //   // display: block;
+  //   // overflow: hidden;
+  //   // vertical-align: middle;
+  }

@@ -1,0 +1,95 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start" mode="md">
+            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{'send_package' | translate}}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="bg_color" fullscreen>
+    <div class="form">
+        <ion-list lines="none">
+            <ion-card class="address_info animate__animated animate__fadeInUp">
+                <ion-item lines="none">
+                    <div class="item_inner d-flex">
+                        <div class="icon_box ion-text-start"><img src="assets/images/ic_pickup_pointact.png"></div>
+                        <div class="input_box">
+                            <ion-label mode="md" position="stacked">{{"pickup_address" | translate}}</ion-label>
+                            <ion-input mode="md" type="name" placeholder="{{'enter_pickup_address' | translate}}"></ion-input>
+                        </div>
+                    </div>
+                </ion-item>
+                <div class="dotted_icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ion-item lines="none">
+                    <div class="item_inner d-flex">
+                        <div class="icon_box ion-text-start"><img src="assets/images/ic_droppointact.png"></div>
+                        <div class="input_box">
+                            <ion-label mode="md" position="stacked">{{"drop_address" | translate}}</ion-label>
+                            <ion-input mode="md" type="name"  placeholder="{{'enter_drop_address' | translate}}"></ion-input>
+                        </div>
+                    </div>
+                </ion-item>
+            </ion-card>
+
+            <ion-card class="package_type animate__animated animate__fadeInUp" (click)="package_type()">
+                <ion-item lines="none">
+                    <div class="item_inner d-flex">
+                        <div class="icon_box ion-text-start"><img src="assets/images/ic_packageact.png"></div>
+                        <div class="input_box">
+                            <ion-label mode="md" position="stacked">{{"select_package_type" | translate}}</ion-label>
+                            <div class="d-flex">
+                                <ion-input mode="md" readonly="boolean" type="name" placeholder="{{'select_type_of_package' | translate}}"></ion-input>
+                                <ion-icon class="zmdi zmdi-chevron-down end ion-text-end"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                </ion-item>
+            </ion-card>
+
+            <ion-card class="any_instruction animate__animated animate__fadeInUp">
+                <ion-item lines="none">
+                    <div class="item_inner d-flex">
+                        <div class="icon_box ion-text-start"><img src="assets/images/ic_instruction.png"></div>
+                        <div class="input_box d-flex">
+                            <ion-input mode="md" type="name" placeholder="{{'any_instruction' | translate}}"></ion-input>
+                        </div>
+                    </div>
+                </ion-item>
+            </ion-card>
+        </ion-list>
+    </div>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+    <ion-list>
+        <div class="payment_info">
+            <h1>{{'payment_info' | translate}}</h1>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                <div class="item_inner">
+                    <h3 class="d-flex">{{'delivery_charge' | translate}} <span class="end">$ 0.00</span></h3>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                <div class="item_inner">
+                    <h3 class="d-flex">{{'service_fee' | translate}} <span class="end">$ 0.50</span></h3>
+                </div>
+            </ion-item>
+            <ion-item lines="none" class="animate__animated animate__fadeInUp">
+                <div class="item_inner">
+                    <h2 class="d-flex">{{'amount_to_pay' | translate}} <span class="end">$ 00.50</span></h2>
+                </div>
+            </ion-item>
+        </div>
+    </ion-list>
+    <ion-button size="large" expand="full" class="btn animate__animated animate__fadeInUp" (click)="pay()">{{'continue' | translate}}</ion-button>
+</ion-footer>

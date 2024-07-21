@@ -1,0 +1,8 @@
+{
+  "name": "shopolite-admin",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "113e3212"
+}

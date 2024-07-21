@@ -1,0 +1,144 @@
+.barcodeEnter {
+    position: absolute;
+    bottom: 0;
+    z-index: 9999;
+    background: #00000000;
+    width: 100%;
+}
+
+ion-card-header {
+    padding: unset;
+}
+
+
+body {
+    height: 100vh;
+    position: relative;
+  }
+  
+  .ocrloader p::before {
+    content: '';
+    display:inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--ion-color-primary);
+    position: relative;
+    right: 4px;
+  }
+  .ocrloader p {
+    color: var(--ion-color-primary);
+    position: absolute;
+    bottom: -30px;
+    left: 38%;
+    font-size: 16px;
+    font-weight: 600;
+    animation: blinker 1.5s linear infinite;
+    font-family: sans-serif;
+    text-transform: uppercase;
+  }
+  
+  .ocrloader {
+    width: 360px;
+    height: 225px;
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    top: 30%;
+    backface-visibility: hidden;
+  }
+  
+  .ocrloader span {
+    position: absolute;
+    left: 35px;
+    top: 0;
+    width: 85%;
+    height: 5px;
+    background-color: var(--ion-color-primary);
+    box-shadow: 0 0 10px 1px var(--ion-color-primary),
+                0 0 1px 1px var(--ion-color-primary);
+    z-index: 1;
+    transform: translateY(95px);
+    animation: move 1.7s cubic-bezier(0.15,0.54,0.76,0.74);
+    animation-iteration-count: infinite;
+  }
+  
+  .ocrloader:before,
+  .ocrloader:after,
+  .ocrloader em:after,
+  .ocrloader em:before {
+    border-color: var(--ion-color-primary);
+    content: "";
+    position: absolute;
+    width: 45px;
+    height: 46px;
+    border-style: solid;
+    border-width: 0px;
+  }
+  .ocrloader:before {
+    left: 0;
+    top: 0;
+    border-left-width: 5px;
+    border-top-width: 5px;
+    border-radius: 5px 0 0 0;
+  }
+  .ocrloader:after {
+    right: 0;
+    top: 0;
+    border-right-width: 5px;
+    border-top-width: 5px;
+    border-radius: 0 5px 0 0;
+  }
+  .ocrloader em:before {
+    left: 0;
+    bottom: 0;
+    border-left-width: 5px;
+    border-bottom-width: 5px;
+    border-radius: 0 0 0 5px;
+  }
+  .ocrloader em:after {
+    right: 0;
+    bottom: 0;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-radius: 0 0 5px 0;
+  }
+  
+  @keyframes move {
+    0%,
+    100% {
+      transform: translateY(190px);
+    }
+    50% {
+      transform: translateY(0%);
+    }
+    75% {
+      transform: translateY(160px);
+    }
+  }
+  
+  @keyframes blinker {  
+    50% { opacity: 0; }
+  }
+
+
+  .retryButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .title-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .close-button {
+    font-size: 20px;
+    border: 2px solid;
+    border-radius: 50%;
+    color:var(--ion-color-primary);
+  }

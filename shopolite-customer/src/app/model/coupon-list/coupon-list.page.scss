@@ -1,0 +1,80 @@
+.block {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+//   ion-modal {
+//     --height: auto;
+//   }
+
+.couponDetails {
+    .title {
+        h6 {
+            padding: 5px 14px 5px 10px;
+            border-bottom: 0.5px solid #80808045;
+        }
+    }
+
+    .subDesc {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 10px 10px 10px;
+        // border-bottom: 0.5px solid #80808045;
+        align-items: center;
+    }
+}
+
+
+.discountData {
+    border: 1px dashed green;
+    /* margin: 10px; */
+    position: relative;
+    background: #ceebce;
+    padding: 10px;
+    span {
+    color: #37ae02;
+    font-weight: bold;
+    }
+}
+
+.couponContent ul {
+    list-style: none;
+    li {
+        font-size: 14px;
+        color: gray;
+        font-weight: 400;
+    }
+  }
+  
+  .couponContent ul li::before {
+    content: "\2022";
+    color: var(--primary);
+    font-weight: bold;
+    display: inline-block; 
+    width: 1em;
+    margin-left: -1em;
+  }
+
+  .copyCoupon {
+    color: var(--primary);
+    font-weight: bold;
+  }
+
+  .couponTitle {
+    margin-bottom: 20px;
+    border-bottom: 2px dashed #80808045;
+    h6 {
+    padding: 5px 5px 4px 10px;
+    }
+  }
+
+  ion-card {
+    padding: 10px;
+  }
+
+  ion-content .inner-scroll {
+    padding: 5px;
+  }

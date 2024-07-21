@@ -1,0 +1,42 @@
+<!--
+<ion-header>
+  <ion-toolbar>
+    <ion-title>variation-selection</ion-title>
+  </ion-toolbar>
+</ion-header>
+-->
+
+<ion-content fullscreen (click)="dismiss()">
+</ion-content>
+<ion-footer >
+  <ion-footer class="ion-no-border">
+  <ion-list lines="none">
+    <ion-icon class="zmdi zmdi-chevron-down center" (click)="dismiss()"></ion-icon>
+    <div *ngIf="this.images">
+      <swiper #swiper [config]="config" [zoom]="true" [centeredSlides]="true" >
+       <ng-template swiperSlide class="mySwiper" *ngFor="let img of images" >
+          <div class="swiper-zoom-container">
+          <img [src]="s3path + img.filePath">
+          </div>
+          <!-- {{s3path + img}} -->
+        </ng-template>
+      </swiper>
+            </div>
+    <!-- <div class="img_box">
+      <img src="{{ s3path + image }}">
+  </div> -->
+        <div class="list_header d-flex">
+            <div class="text_box">
+                <h2>{{productName}}</h2>
+                <h3>{{brandName}}</h3>
+                <h5 *ngIf="offerUnit">{{unitValue}} {{unit}} ({{offerUnit}})
+                   </h5>
+              <h5 *ngIf="!offerUnit">{{unitValue}} {{unit}}
+                </h5>
+                <!-- <h2 class="d-flex d-flex-class">{{unitValue}} {{unit}} <span class="end">₹ {{sellingPrice}}</span></h2> -->
+          </div>
+            <!-- <h6 class="end" *ngIf="!quantity" (click)="onAdd()">{{'add' | translate}}</h6> -->
+        </div>
+ </ion-list>
+</ion-footer>
+

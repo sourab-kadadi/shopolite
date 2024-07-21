@@ -1,0 +1,47 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+            {{'set_store_address' | translate}}
+        </ion-title>
+    </ion-toolbar >
+    <div class="search_box animate__animated animate__zoomIn" (click)="navigateToMapSearch()">
+        <ion-icon class="zmdi zmdi-search ion-text-start"></ion-icon>
+        <ion-searchbar (click)="navigateToMapSearch()" #search class="ion-no-padding" searchIcon="hide" placeholder="{{'search_lcation' | translate}}"></ion-searchbar>
+    </div>
+</ion-header>
+
+<ion-content class="bg_color" fullscreen>
+    <div class="map">
+        <!-- <img src="assets/images/map.png">
+        <div class="map_pin" style="top: 43%; right: 50%;"></div> -->
+        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="15" >
+            <agm-marker
+              [latitude]="lat"
+              [longitude]="lng"
+              (markerClick)="onMarkerClick()"
+              [markerDraggable]="true"
+              (dragEnd)="markerDragEnd($event)"
+              [iconUrl]="mapIconUrl"
+            >
+        </agm-marker>
+          </agm-map>
+    </div>
+</ion-content>
+
+<ion-footer class="ion-no-border animate__animated animate__fadeInUp">
+    <div class="footer_content">
+        <div class="current_location">
+            <ion-icon class="zmdi zmdi-gps-dot"></ion-icon>
+        </div>
+        <div class="address">
+            <h2 class="d-flex">
+                <span class="map_pin"></span>
+               {{address}}
+            </h2>
+        </div>
+    </div> 
+    <ion-button size="large"  (click)="navigateToMapSearch()" expand="full" class="btn">{{'continue' | translate}}</ion-button>
+</ion-footer>

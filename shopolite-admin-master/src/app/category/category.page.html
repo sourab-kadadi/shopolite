@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <!-- <ion-menu-button slot="start" contentId="main-content" type="overlay"></ion-menu-button> -->
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home-page"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center header-margin-left">Category</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <ngx-ui-loader [loaderId]="'loader-category-list'" class="full"></ngx-ui-loader>
+  <ion-refresher slot="fixed" pullFactor="0.9" pullMin="60" pullMax="200" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Pull to refresh"
+      refreshingSpinner="circles" refreshingText="Refreshing..." class="ion-padding-top-refresh">
+    </ion-refresher-content>
+  </ion-refresher>
+
+<ion-grid>
+<!-- <ion-row> -->
+  <ion-item>
+  <ion-col size="3">
+<ion-label><b>Category Image</b></ion-label>
+  </ion-col>
+  <ion-col size="3">
+    <ion-label><b>Category Name</b></ion-label>
+  </ion-col>
+  <ion-col size="2">
+    <ion-label><b>Manual Rank</b></ion-label>
+  </ion-col>
+  <ion-col size="2">
+    <ion-label><b>Status</b></ion-label>
+  </ion-col>
+  <ion-col size="2">
+    <ion-label><b>Option</b></ion-label>
+  </ion-col>
+</ion-item>
+<!-- </ion-row> -->
+
+<!-- <ion-item *ngFor="let item of categoryData; let i = index" [routerLink]="['./update', item._id]"> -->
+  <ion-item *ngFor="let item of categoryData; let i = index">
+  <ion-col size="3">
+    <div *ngIf="item.image && item.image.filePath" class="image-margin-right img_box">
+      <ion-img src="{{ s3path + item.image.filePath }}"></ion-img>
+    </div>
+  </ion-col>
+  <ion-col size="3">
+    <ion-label>{{ item?.name }}</ion-label>
+  </ion-col>
+  <ion-col size="2">
+    <ion-label>{{ item?.manualRanking }}</ion-label>
+  </ion-col>
+  <ion-col size="2">
+    <ion-label>{{ item?.status }}</ion-label>
+  </ion-col>
+  <ion-col size="2">
+<ion-button routerDirection="forward" [routerLink]="['./update', item._id]">Edit</ion-button>
+  </ion-col>
+</ion-item>
+
+</ion-grid>
+
+
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" [routerLink]="['create']">
+  <ion-fab-button>
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+<!-- <ion-button [routerLink]="['create']" type="button"><ion-icon name="add-outline"></ion-icon> Add</ion-button> -->
+
+
+</ion-content>

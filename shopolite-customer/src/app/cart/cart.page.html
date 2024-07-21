@@ -1,0 +1,229 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start" mode="md">
+            <ion-back-button text="" icon="chevron-back-outline" [defaultHref]="previousPage    "></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{'confirm_order' | translate}}</ion-title>
+    </ion-toolbar>
+    <div class="shop_name" *ngIf="!isLoading">
+        <h2>{{storeName}}</h2>
+    </div>
+</ion-header>
+
+<ion-content class="bg_color" fullscreen *ngIf="serverError ">
+  <div  class="delivered animate__animated animate__fadeInUp, no_network">
+    <img src="../../assets/images/no_internet.gif">
+    <div class="delivered animate__animated animate__fadeInUp no_network_text">
+      <h6 class="top_margin">Could not connect to the server.</h6>
+      <h6>Please check your network.</h6>
+      <h6> <a href="{{'tel:'+918558905905}}" style="text-decoration: none;">
+          <ion-icon class="zmdi zmdi-phone ion-text-end icon-padding"></ion-icon> Contact Support
+        </a></h6><br>
+      <div class="" (click)="ionViewWillEnter()"><a style="text-decoration: none;"><u>Refresh and try again</u></a></div>
+    </div>
+  </div>
+</ion-content>
+<ion-content class="bg_color" fullscreen *ngIf="!serverError  ">
+
+  <ion-list lines="none" *ngIf="isLoading">
+    <div class="item_list animate__animated animate__fadeInUp">
+        <ion-item class="animate__animated animate__fadeInUp"  *ngFor="let cart of [1,2,3,4]">
+            <div class="item_inner">
+                <div class="text_box">
+                    <h3><ion-skeleton-text animated="true" style="width: 70%"></ion-skeleton-text></h3>
+
+                        <h5 ><ion-skeleton-text animated="true" style="width: 40%"></ion-skeleton-text>
+                        </h5>
+                </div>
+            </div>
+        </ion-item>
+    </div>
+
+    <div class="form animate__animated animate__fadeInUp">
+        <ion-item lines="none">
+            <div class="item_inner d-flex">
+              <ion-skeleton-text animated="true" style="width: 100%; height: 10px"></ion-skeleton-text>
+            </div>
+        </ion-item>
+    </div>
+
+    <div class="payment_info animate__animated animate__fadeInUp">
+        <h1><ion-skeleton-text animated="true" style="width: 4%"></ion-skeleton-text></h1>
+        <ion-item class="animate__animated animate__fadeInUp">
+            <div class="item_inner">
+                <h3 class="d-flex"><ion-skeleton-text animated="true" style="width: 40%"></ion-skeleton-text> </h3>
+            </div>
+        </ion-item>
+        <ion-item class="animate__animated animate__fadeInUp">
+            <div class="item_inner">
+                <h3 class="d-flex"><ion-skeleton-text animated="true" style="width: 40%"></ion-skeleton-text></h3>
+            </div>
+        </ion-item>
+        <ion-item class="animate__animated animate__fadeInUp">
+            <div class="item_inner">
+                <h2 class="d-flex"><ion-skeleton-text animated="true" style="width: 40%"></ion-skeleton-text></h2>
+            </div>
+        </ion-item>
+    </div>
+</ion-list>
+
+    <ion-list lines="none" *ngIf="!isLoading">
+        <div class="item_list animate__animated animate__fadeInUp">
+            <ion-item class="animate__animated animate__fadeInUp"  *ngFor="let cart of list; let i = index">
+                <div class="item_inner d-flex">
+                    <div class="img_box">
+                        <img src="{{ s3path + cart.image.filePath }}">
+                    </div>
+                    <div class="text_box">
+                        <h3>{{cart.productName}}</h3>
+                        <div class="end">
+                            <p class="total-amount ion-text-end" *ngIf="cart">
+                                <span class="currency"> ₹ </span> <strong> {{ cart.totalSellingPrice | number:'1.0-2'}} </strong>
+                                <strong class="discount-frame" *ngIf="cart.discount?.value &&  cart.discount?.type"
+                                  ><span *ngIf="cart.discount?.type == 'AMOUNT'"> Flat ₹ </span
+                                  >{{cart.discount?.value}}<span *ngIf="cart.discount?.type == 'PERCENTAGE'">
+                                    %
+                                  </span></strong
+                                >
+                              </p>
+                              <p
+                              class="discount"
+                              *ngIf="cart && cart.discount?.value &&  cart.discount?.type"
+                            >
+                              <span class="main-frame">
+                                <span> <span class="currency"> ₹ </span> <strong> {{cart.totalOriginalPrice | number:'1.0-2'}} </strong> </span>
+                              </span>
+                            </p>
+                            </div>
+                        <div class="buttons d-flex">
+                            <h5 (click)="variation_selection(i)">{{cart.unitValue}} {{cart.unit}}
+                                <ion-icon class="zmdi zmdi-chevron-down ion-text-end"></ion-icon>
+                            </h5>
+                            <p class="cart-unit end">
+                                <span (click)="decrement(cart.quantity, cart.storeProductId, i)">-</span>
+                                <strong >{{cart.quantity}}</strong>
+                                <span (click)="increment(cart.quantity, cart.storeProductId, i)">+</span>
+                            </p>
+                            &nbsp; &nbsp;
+                            <!-- <h4 class="ion-text-end">₹ {{cart.totalSellingPrice}}</h4> -->
+
+                        </div>
+                    </div>
+                </div>
+            </ion-item>
+        </div>
+
+
+        <div  class="barcodeEnter">
+            <div class="subDesc">
+                <div class="title">
+                  Coupon Code
+                </div>
+                <div class="actionButton" (click)="couponListModel(couponList)">
+                  View offers
+                </div>
+              </div>
+            <ion-card>
+              <ion-card-header>
+                <ion-item>
+                    <ion-icon class="pricing-tag" name="pricetag-outline"></ion-icon>
+                  <ion-input placeholder="Enter Coupon Code" [(ngModel)]="couponCodeTemp"></ion-input>
+                  <!-- <ion-button (click)="enteredBarcode()"><ion-icon name="arrow-forward-outline"></ion-icon>  </ion-button> -->
+                  <ion-button class="applyButton" (click)="applyCoupon(couponCodeTemp)"> <ion-icon name="arrow-forward-outline"></ion-icon> </ion-button>
+                </ion-item>
+              </ion-card-header>
+              <div class="coupon-error d-flex" *ngIf="couponDetails?.validate == false">
+                <ion-icon name="information-circle" size="medium" slot="end"></ion-icon>
+                {{ couponDetails?.error | translate}}
+            </div>
+
+            <div class="coupon-success d-flex" *ngIf="couponDetails?.validate == true">
+                <ion-icon name="information-circle" size="medium" slot="end"></ion-icon>
+                {{ "Coupon Applied" | translate}}
+            </div>
+            </ion-card>
+   
+            </div>
+        <!-- <div class="form animate__animated animate__fadeInUp">
+            <ion-item class="coupon-main" lines="none">
+                <div class="item_inner ">
+                    <div class="d-flex">
+                    <div class="icon_box ion-text-start"><img src="assets/images/ic_instruction.png"></div>
+                    <div class="input_box">
+                        <ion-input mode="md" type="name" [(ngModel)]="couponCode" placeholder="{{'Coupon Code' | translate}}"></ion-input>
+                        <ion-button class="applyButton" (click)="applyCoupon()"> Apply </ion-button>
+                    </div>
+                </div>
+                <div class="coupon-error d-flex">
+                    {{'Invalid Coupon Code' | translate}}
+             </div>
+                </div>
+            
+            </ion-item>
+    
+        </div> -->
+  
+        <div class="payment_info animate__animated animate__fadeInUp">
+            <h1>{{'payment_info' | translate}}</h1>
+            <ion-item class="animate__animated animate__fadeInUp">
+                <div class="item_inner">
+                    <h3 class="d-flex">{{'Sub total' | translate}} <span class="end">₹ {{totalCartOriginalPrice | number:'1.2-2'}}</span></h3>
+                </div>
+            </ion-item>
+            <ion-item class="animate__animated animate__fadeInUp" *ngIf="totalCartDiscount">
+                <div class="item_inner">
+                    <h3 class="d-flex">{{'Discount' | translate}} <span class="end color-green-subtitle">- ₹ {{totalCartDiscount | number:'1.2-2'}}</span></h3>
+                </div>
+            </ion-item>
+            <ion-item class="animate__animated animate__fadeInUp" *ngIf="totalCouponDiscount">
+                <div class="item_inner">
+                    <h3 class="d-flex">{{'Coupon discount' | translate}} <span class="end color-green-subtitle">- ₹ {{totalCouponDiscount | number:'1.2-2'}}</span></h3>
+                </div>
+            </ion-item>
+            <ion-item class="animate__animated animate__fadeInUp">
+                <div class="item_inner">
+                    <h3 class="d-flex">{{'Delivery partner fee ' | translate}}  <i> {{thresholdDeliveryText}}</i>
+                        <span  class="end" style="padding-right: 5px"> </span> 
+                        <span *ngIf="!totalDeliveryCost" class="color-green-subtitle"> FREE</span>
+                        <span *ngIf="totalDeliveryCost" class="end">₹ {{totalDeliveryCost | number:'1.2-2'}} </span> 
+                    </h3>
+                </div>
+            </ion-item>
+            <ion-item class="animate__animated animate__fadeInUp">
+                <div class="item_inner">
+                    <h2 class="d-flex">{{'amount_to_pay' | translate}}({{'cash_on_delivery' | translate}}) <span class="end">₹ {{totalCustomerOrderCost | number:'1.2-2'}}</span></h2>
+                </div>
+            </ion-item>
+        </div>
+        <!-- <div class="form animate__animated animate__fadeInUp">
+            <ion-item lines="none">
+                <div class="item_inner d-flex">
+                    <div class="icon_box ion-text-start"><img src="assets/images/ic_instruction.png"></div>
+                    <div class="input_box">
+                        <ion-input mode="md" type="name" [(ngModel)]="note" placeholder="{{'any_instruction' | translate}}"></ion-input>
+                    </div>
+                </div>
+            </ion-item>
+        </div> -->
+
+    </ion-list>
+</ion-content>
+
+<ion-footer class="ion-no-border animate__animated animate__fadeInUp" *ngIf="!serverError && !isLoading">
+    <div class="delivery_address" (click)="selectAddress()">
+        <h2 class="d-flex" *ngIf="address">
+            <ion-icon class="zmdi zmdi-pin ion-text-start"></ion-icon>
+            {{'deliver_to' | translate}}&nbsp;
+            <span  class="ion-text-uppercase">{{address?.tag}}</span>
+
+<!--            <span class="end">{{'change' | translate}}</span>-->
+        </h2>
+        <h2 class="d-flex" *ngIf="!address">
+            <ion-icon class="zmdi zmdi-pin ion-text-start"></ion-icon>
+            {{'Select Delivery Address' | translate}}&nbsp;
+<!--            <span class="end">{{'change' | translate}}</span>-->
+        </h2>
+        <p *ngIf="address"> {{address?.buildingName}} {{', ' +address?.buildingNumber}}{{', ' + address?.area}}{{', ' + address?.landmark}}</p>
+    </div>
+    <ion-button size="large" expand="full" class="btn" (click)="order()" [disabled]="!address">{{'place_order' | translate}} ₹ {{totalCustomerOrderCost}}</ion-button>
+</ion-footer>

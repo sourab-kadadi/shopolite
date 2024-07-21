@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-title>
+          <div class="title_inner d-flex">
+              <span>{{'category' | translate}}</span>
+              <ion-icon class="zmdi zmdi-search end ion-text-end"></ion-icon>
+          </div>
+      </ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+  <!-- <div class="tab_content">
+              <ion-list lines="none">
+                  <ion-item *ngFor="let cat of categories" class="animate__animated animate__fadeInUp">
+                      <div class="item_inner d-flex">
+                          <div class="img_box">
+                              <img src="{{ s3path + cat.image.filePath }}">
+                          </div>
+                          <div class="text_box">
+                              <h3 class="truncate">{{cat.name}}</h3>
+                          </div>
+                      </div>
+                  </ion-item>
+              </ion-list>
+  </div> -->
+
+  <div class="item-container">
+    <!-- <h2><strong>{{'got_delivered' | translate}}</strong> {{'everything_you_need' | translate}}</h2> -->
+
+    <ion-row>
+        <ion-col *ngFor="let cat of categories" class="animate__animated animate__zoomIn" size="6" (click)="listProduct(cat._id)">
+            <div class="item_box">
+                <div class="item_img">
+                    <img src="{{ s3path + cat.image.filePath }}">
+                </div>
+                <div class="item_text ion-text-center">
+                    <h3>
+                        {{cat.name}}
+                    </h3>
+                </div>
+            </div>
+        </ion-col>
+        </ion-row>
+        </div>
+</ion-content>

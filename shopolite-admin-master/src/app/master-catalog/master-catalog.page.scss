@@ -1,0 +1,49 @@
+// .img_box {
+//   min-width: 97px;
+//   max-width: 97px;
+//   height: 97px;
+//   margin-right: 12px;
+//   display: flex;
+//   align-items: center;
+//   img {
+//       display: block;
+//       margin: auto;
+//       width: 95px;
+//   }
+// }
+
+ion-img{
+  // //   --size: 4em;  // this should take effect but doesn't
+  // //   --border-radius: 12px;
+    width: 135px !important;
+    height: 100% !important;
+  //   // display: block;
+  //   // overflow: hidden;
+  //   // vertical-align: middle;
+  }
+
+.table-listing {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+body {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  }
+  .line{
+    // width: 10px;
+    // height: 47px;
+    border-bottom: 2px dotted #ababab;
+    // position: absolute;
+    }
+
+
+.image-display-size {
+  width: 250px !important;
+  height: 250px !important;
+}

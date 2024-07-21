@@ -1,0 +1,273 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start" mode="md">
+            <ion-back-button text="" icon="chevron-back-outline" defaultHref="/tabs/my_orders"></ion-back-button>
+        </ion-buttons>
+        <ion-title><div class="title">
+          Order Details
+        </div></ion-title>
+    </ion-toolbar>
+
+<!-- skeleton text start -->
+<ion-item lines="none" *ngIf="isLoading">
+  <div class="item_inner">
+      <div class="item_info d-flex animate__animated animate__fadeInUp">
+          <div class="itme_img">
+            <ion-thumbnail slot="start" style="width: 45px; height: 45px">
+              <ion-skeleton-text animated="true" style="width: 45px; height: 45px"></ion-skeleton-text>
+            </ion-thumbnail>
+          </div>
+          <div class="item_details">
+              <h3 class="d-flex">
+                <ion-skeleton-text animated style="width: 45%"></ion-skeleton-text>
+              </h3>
+              <h4 class="d-flex"> <ion-skeleton-text animated style="width: 45%"></ion-skeleton-text></h4>
+          </div>
+      </div>
+        <ion-row>
+          <ion-col size="2"></ion-col>
+          <ion-col size="10">
+            <h5>
+              <ion-skeleton-text animated style="width: 58%"></ion-skeleton-text>
+            </h5>
+            <h5>
+              <ion-skeleton-text animated style="width: 58%"></ion-skeleton-text>
+            </h5>
+          </ion-col>
+        </ion-row>
+  </div>
+</ion-item>
+<!-- skeleton text end -->
+
+    <ion-item lines="none" *ngIf="!isLoading && isActive">
+        <div class="item_inner">
+            <div class="item_info d-flex animate__animated animate__fadeInUp">
+                <div class="itme_img">
+                    <img src="{{ s3path + orderDetails?.category.image.filePath }}">
+                </div>
+                <div class="item_details">
+                    <h3 class="d-flex">
+                        {{orderDetails?.orderGroupId | titlecase }}
+                        <span class="end order_status">
+                            {{orderDetails?.orderStatus | translate | titlecase }}
+                        </span>
+                    </h3>
+                    <h4 class="d-flex">{{orderDetails?.createdAt | date: 'MMM d, y,  h:mm a'}} <span class="end">₹ {{orderDetails?.totalCartCost | number:'1.2-2'}} | COD</span></h4>
+                </div>
+            </div>
+            <div class="address_info animate__animated animate__fadeInUp">
+                <div class="from_to d-flex animate__animated animate__fadeInUp">
+                    <div class="icon_box d-flex">
+                        <ion-icon class="zmdi zmdi-pin"></ion-icon>
+                    </div>
+                    <h5>{{orderDetails?.storeName | titlecase}} <span>({{orderDetails?.storeDetails.address1}})</span></h5>
+                </div>
+                <div class="dotted_icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="from_to d-flex animate__animated animate__fadeInUp">
+                    <div class="icon_box d-flex">
+                        <ion-icon class="zmdi zmdi-navigation"></ion-icon>
+                    </div>
+                    <h5>{{orderDetails?.address.tag | titlecase}} <span>({{orderDetails?.address.buildingName}})</span></h5>
+                </div>
+            </div>
+        </div>
+    </ion-item>
+</ion-header>
+
+<ion-content class="bg_color" fullscreeen>
+  <div *ngIf="serverError  " class="delivered animate__animated animate__fadeInUp, no_network">
+    <img src="../../assets/images/no_internet.gif">
+    <div class="delivered animate__animated animate__fadeInUp no_network_text">
+      <h6 class="top_margin">Could not connect to the server.</h6>
+      <h6>Please check your network.</h6>
+      <h6> <a href="{{'tel:'+918558905905}}" style="text-decoration: none;">
+          <ion-icon class="zmdi zmdi-phone ion-text-end icon-padding"></ion-icon> Contact Support
+        </a></h6><br>
+      <div class="" (click)="getMyOrderDetails(this.orderId)"><a style="text-decoration: none;"><u>Refresh and try again</u></a></div>
+    </div>
+  </div>
+
+  <div *ngIf="!fabAction && !isLoading && isActive &&!serverError" class="map center_img">
+            <!-- <img src="assets/images/map.png">
+            <div class="map_pin" style="top: 43%; right: 50%;"></div> -->
+            <agm-map [latitude]="orderDetails?.storeDetails?.location?.coordinates[0]" [longitude]="orderDetails?.storeDetails?.location?.coordinates[1]" [zoom]="15" (mapReady)="onMapReady($event)">
+                <!-- <agm-marker
+                  [latitude]="orderDetails?.storeDetails?.location?.coordinates[0]"
+                  [longitude]="orderDetails?.storeDetails?.location?.coordinates[1]"
+                >
+            </agm-marker> -->
+            <agm-direction [origin]="origin" [destination]="destination"  [markerOptions]="markerOptions"  [renderOptions]="renderOptions"></agm-direction>
+              </agm-map>
+    </div>
+
+
+    <ion-list class="animate__animated animate__fadeInUp" lines="none" [ngClass]="fabAction ? 'active' : ''" *ngIf="!serverError">
+      <ion-item class="profile_info" *ngIf="!isLoading && isActive &&!serverError">
+            <div class="item_inner d-flex">
+                <div class="img_box center_img">
+                  <img src="{{s3path + orderDetails?.storeDetails?.logo?.filePath || defaultImgStore}}" class="crop_img">
+                    <!-- <img src="assets/images/img_profile.png" class="crop_img"> -->
+                </div>
+                <div class="text_box">
+                    <h2>{{orderDetails?.storeName | titlecase}}</h2>
+                    <h3>{{orderDetails?.storeDetails.storeType.name || "Store" | titlecase }}</h3>
+                </div>
+                <div class="icon_box end">
+                    <!-- <ion-icon class="zmdi zmdi-comment-alt-text ion-text-start" (click)="chat()"></ion-icon> -->
+                    <!-- <ion-icon class="zmdi zmdi-phone ion-text-end"></ion-icon> -->
+                    <a href="{{'tel:'+ orderDetails?.storeOwnerDetails.phoneNo}}">
+                      <ion-icon class="zmdi zmdi-phone ion-text-end"></ion-icon>
+                    </a>
+                </div>
+            </div>
+        </ion-item>
+
+<!-- skeleton text start -->
+<div *ngIf="isLoading">
+  <div class="list-inner">
+      <div class="item_list">
+          <ion-item *ngFor="let number of [0,1]">
+              <div class="item_inner">
+                  <div class="text_box">
+                      <h3><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></h3>
+                      <div class="buttons d-flex">
+                          <h5> <ion-skeleton-text animated style="width: 35%"></ion-skeleton-text></h5>
+                          <!-- <h4 class="ion-text-end end">  <ion-skeleton-text animated style="width: 35%"></ion-skeleton-text></h4> -->
+                      </div>
+                  </div>
+              </div>
+          </ion-item>
+      </div>
+
+      <div class="form">
+          <ion-item lines="none">
+              <div class="item_inner d-flex">
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </div>
+          </ion-item>
+      </div>
+
+      <div class="payment_info">
+          <h1><ion-skeleton-text animated style="width: 20%"></ion-skeleton-text></h1>
+          <ion-item>
+              <div class="item_inner">
+                  <h3 class="d-flex"><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text> </h3>
+              </div>
+          </ion-item>
+          <ion-item>
+              <div class="item_inner">
+                  <h3 class="d-flex"><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text> </h3>
+              </div>
+          </ion-item>
+          <ion-item>
+              <div class="item_inner">
+                  <h2 class="d-flex"><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text> </h2>
+              </div>
+          </ion-item>
+      </div>
+  </div>
+</div>
+<!-- skeleton text end -->
+        <div *ngIf="!isLoading && isActive  &&!serverError">
+        <div class="list-inner">
+            <div class="item_list">
+                <ion-item *ngFor="let order of orderDetails?.orderList">
+                    <div class="item_inner">
+                        <div class="text_box d-flex">
+                            <div class="img_box">
+                                <img src="{{ s3path + order.image.filePath }}">
+                            </div>
+                            <div class="order-data">
+                            <h3>{{order.productName}}</h3>
+                            <div class="order-list-price buttons d-flex">
+                                <div >
+                                    <p class="total-amount ion-text-end" *ngIf="order">
+                                        <span class="currency"> ₹ </span> <strong> {{ order.totalSellingPrice | number:'1.2-2'}} </strong>
+                                        <strong class="discount-frame" *ngIf="order.discount?.value &&  order.discount?.type"
+                                          ><span *ngIf="order.discount?.type == 'AMOUNT'"> Flat ₹ </span
+                                          >{{order.discount?.value}}<span *ngIf="order.discount?.type == 'PERCENTAGE'">
+                                            %
+                                          </span></strong
+                                        >
+                                      </p>
+                                      <p
+                                      class="discount"
+                                      *ngIf="order && order.discount?.value &&  order.discount?.type"
+                                    >
+                                      <span class="main-frame">
+                                        <span> <span class="currency"> ₹ </span> <strong> {{order.totalOriginalPrice | number:'1.2-2'}} </strong> </span>
+                                      </span>
+                                    </p>
+                                    </div>
+                                <h5 class="end"> {{order.unitValue}} {{order.unit}} x {{order.quantity}}</h5>
+                                <!-- <h4 class="ion-text-end end"> ₹ {{order.totalSellingPrice}}</h4> -->
+
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </ion-item>
+            </div>
+
+            <div class="form">
+                <ion-item lines="none">
+                    <div class="item_inner d-flex">
+                        <div class="icon_box ion-text-start"><img src="assets/images/ic_instruction.png"></div>
+                        <div class="input_box">
+                            <ion-input [disabled]="isDisabled" mode="md" [value]="orderDetails?.note || ''" type="name"></ion-input>
+                        </div>
+                    </div>
+                </ion-item>
+            </div>
+
+            <div class="payment_info">
+                <h1>{{'payment_info' | translate}}</h1>
+                <ion-item>
+                    <div class="item_inner">
+                        <h3 class="d-flex">{{'Sub total' | translate}} <span class="end">₹ {{orderDetails?.totalCartOriginalPrice | number:'1.2-2'}}</span></h3>
+                    </div>
+                </ion-item>
+                <ion-item *ngIf="orderDetails?.totalCartDiscount">
+                    <div class="item_inner">
+                        <h3 class="d-flex">{{'Discount' | translate}} <span class="end color-green-subtitle"> - ₹ {{orderDetails?.totalCartDiscount | number:'1.2-2'}}</span></h3>
+                    </div>
+                </ion-item>
+                <ion-item class="animate__animated animate__fadeInUp" *ngIf="orderDetails?.couponDetails?.validate == true">
+                    <div class="item_inner">
+                        <h3 class="d-flex">{{'Coupon discount' | translate}} <span class="end color-green-subtitle">- ₹ {{orderDetails?.couponDetails?.discountAmount | number:'1.2-2'}}</span></h3>
+                    </div>
+                </ion-item>
+                <ion-item>
+                    <div class="item_inner">
+                        <h3 class="d-flex">{{'Delivery partner fee' | translate}} <i>{{thresholdDeliveryText}}</i>
+                            <span  class="end" style="padding-right: 5px"> </span> 
+                            <span *ngIf="!orderDetails?.totalDeliveryCost" class="color-green-subtitle"> FREE</span>
+                            <span *ngIf="orderDetails?.totalDeliveryCost" class="end">₹ {{orderDetails?.totalDeliveryCost | number:'1.2-2'}} </span> 
+                        </h3>
+                    </div>
+                </ion-item>     
+                <ion-item class="totalAmount">
+                    <div class="item_inner">
+                        <h2 class="d-flex">{{'amount_to_pay' | translate}} <span class="end">₹ {{orderDetails?.totalCustomerOrderCost | number:'1.2-2'}}</span></h2>
+                    </div>
+                </ion-item>
+            </div>
+        </div>
+      </div>
+    </ion-list>
+
+
+</ion-content>
+
+<ion-footer *ngIf="!isLoading && isActive  &&!serverError" class="ion-no-border d-flex animate__animated animate__fadeInUp" [ngClass]="fabAction ? 'active' : ''">
+    <h2>3 {{'items' | translate}}</h2>
+    <h6 class="end d-flex" (click)="toggleFab()">
+        <span>{{'view_order' | translate}}</span>
+        <span>{{'Map' | translate}}</span>
+        <ion-icon class="zmdi zmdi-chevron-down ion-text-center end"></ion-icon>
+    </h6>
+</ion-footer>

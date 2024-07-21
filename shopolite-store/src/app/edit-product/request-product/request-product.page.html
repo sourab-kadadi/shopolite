@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start"> <ion-back-button text="" icon="chevron-back-outline"></ion-back-button> </ion-buttons>
+    <ion-title>
+      <div class="title_inner d-flex">
+        <span>{{'Request Products' | translate}}</span>
+        <ion-icon class="zmdi zmdi-search end ion-text-end"></ion-icon>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="tab_content">
+
+        <ion-list lines="none">
+          <ion-item *ngFor="let product of products; let i = index" class="animate__animated animate__fadeInUp">
+            <div class="item_inner d-flex">
+              <div class="img_box"><img src="{{ s3path + product.image.filePath }}" /></div>
+              <div class="text_box">
+                <h3 class="truncate padding-10">{{product.name}}</h3>
+                <!-- <h4 (click)="edit_product(product._id)" *ngIf="product"> ₹ {{product?.sellingPrice}}</h4> -->
+                <div class="end padding-10">
+                    <p class="total-amount" *ngIf="product">
+                        <span class="currency"> ₹ </span> <strong> {{ product.sellingPrice}} </strong>
+                        <strong class="discount-frame" *ngIf="product.discount?.value &&  product.discount?.type"
+                          ><span *ngIf="product.discount?.type == 'AMOUNT'"> Flat ₹ </span
+                          >{{product.discount?.value}}<span *ngIf="product.discount?.type == 'PERCENTAGE'">
+                            %
+                          </span></strong
+                        >
+                      </p>
+                      <p
+                        class="discount"
+                        *ngIf="product && product.discount?.value &&  product.discount?.type"
+                      >
+                        <span class="main-frame">
+                          <span> <span class="currency"> ₹ </span> <strong> {{product.originalPrice}} </strong> </span>
+                        </span>
+                      </p>
+                </div>
+
+                <div class="buttons d-flex">
+                  <h5 *ngIf="product">
+                    {{product.unitValue}} {{product.unit}}
+                    <ion-icon class="zmdi zmdi-chevron-down ion-text-end"></ion-icon>
+                  </h5>
+                  <div class="toggle_box end">
+                    <span [ngStyle]="{'color': (product.requestStatus === 'Rejected') ? 'red' : (product.requestStatus === 'Rejected') ? 'red' : (product.requestStatus === 'Approved') ? 'orange' : (product.requestStatus === 'Live') ? 'green' : ''}">{{product.requestStatus}}</span>&nbsp;&nbsp;
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ion-item>
+        </ion-list>
+  </div>
+
+  <ion-fab class="animate__animated animate__zoomIn" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addRequestProduct()"> <span>+</span> </ion-fab-button>
+  </ion-fab>
+  <ion-infinite-scroll threshold="85%" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data..."> </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

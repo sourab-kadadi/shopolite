@@ -1,0 +1,35 @@
+<ion-content class="ion-padding">
+  <div class="title">
+    <h6>Discount Details</h6>
+  </div>
+  <div>
+  <div *ngFor="let data of couponList" class="ion-margin-top">
+    <ion-card>
+    <div class="couponDetails">
+    <div class="subDesc">
+      <div class="discountData">
+        Code: <span>{{data?.code}}</span>
+      </div>
+      <div class="copyCoupon" (click)="dismiss(data?.code)">
+        APPLY
+      </div>
+    </div>
+    <div class="couponTitle">
+      <h6>{{data.title}}</h6>
+    </div>
+    <ion-accordion-group>
+      <ion-accordion value="first">
+        <ion-item slot="header" color="light">
+          <ion-label>See more</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <div class="couponContent" [innerHtml]="data?.description">
+          </div>
+        </div>
+      </ion-accordion>
+      </ion-accordion-group>
+    </div>
+    </ion-card>
+  </div>
+  </div>
+</ion-content>

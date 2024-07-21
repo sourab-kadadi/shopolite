@@ -1,0 +1,7 @@
+{
+  "name": "Shopolite",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,174 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button [defaultHref]="defHref" text="" icon="chevron-back-outline"></ion-back-button>
+      </ion-buttons>
+      <ion-title>
+          {{ 'Manage Address' | translate}}
+      </ion-title>
+  </ion-toolbar >
+</ion-header>
+
+<ion-content class="bg_color" fullscreen>
+
+  <div *ngIf="serverError && !isLoading" class="delivered animate__animated animate__fadeInUp, no_network">
+    <img src="../../assets/images/no_internet.gif">
+    <div class="delivered animate__animated animate__fadeInUp no_network_text">
+      <h6 class="top_margin">Could not connect to the server.</h6>
+      <h6>Please check your network.</h6>
+      <h6> <a href="{{'tel:'+ 918558905905}}" style="text-decoration: none;">
+          <ion-icon class="zmdi zmdi-phone ion-text-end icon-padding"></ion-icon> Contact Support
+        </a></h6><br>
+      <div class="" (click)="getAddress(this.addressId)"><a style="text-decoration: none;"><u>Refresh and try again</u></a></div>
+    </div>
+  </div>
+
+
+<div *ngIf="isLoading">
+  <ion-item class="animate__animated animate__fadeInUp" lines="none" *ngFor="let number of [0,1,2,3,4,5,6,7,8,9]">
+    <!-- <div class="item_inner d-flex"> -->
+        <ion-skeleton-text animated="true" style="width: 70%; height: 15px"></ion-skeleton-text>
+      <!-- </div> -->
+<!-- </div> -->
+</ion-item>
+</div>
+
+
+  <form #documentEditAddressForm="ngForm" [formGroup]="addressForm" (ngSubmit)="submitForm()" novalidate>
+    <div *ngIf="!isLoading && !serverError">
+    <ion-list lines="none">
+      <div class="form animate__animated animate__fadeInUp">
+        <ion-item class="animate__animated animate__fadeInUp" lines="none">
+          <div class="item_inner d-flex">
+          <div class="input_box">
+          <ion-label mode="md" position="stacked">{{"Tag location  " | translate}}</ion-label>
+          <ion-segment formControlName="tag">
+            <ion-segment-button value="HOME">
+              <ion-label>Home</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="WORK">
+              <ion-label>Work</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="OUTDOOR">
+              <ion-label>Outdoor</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="OTHER">
+              <ion-label>Other</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+          </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="animate__animated animate__fadeInUp" lines="none">
+          <div class="item_inner d-flex">
+            <div class="input_box">
+              <ion-label mode="md" position="stacked">{{"Full Name" | translate}} <span class="start">*</span></ion-label>
+              <ion-input formControlName="fullName" mode="md" type="text" placeholder=""></ion-input>
+            </div>
+          </div>
+          <span class="error" *ngIf="isSubmitted && errorControl.fullName.errors?.required">
+            Full Name Required.
+          </span>
+          <span class="error" *ngIf="isSubmitted && errorControl.fullName.errors?.minlength">
+            Full Name should be min 2 length long.
+          </span>
+        </ion-item>
+
+        <ion-item class="animate__animated animate__fadeInUp" lines="none">
+          <div class="item_inner d-flex">
+            <div class="input_box">
+              <ion-label mode="md" position="stacked">{{"Flat No / Building No" | translate}} <span class="start">*</span></ion-label>
+              <ion-input formControlName="buildingNumber" mode="md" type="text" placeholder=""></ion-input>
+            </div>
+          </div>
+          <span class="error" *ngIf="isSubmitted && errorControl.buildingNumber.errors?.required">
+            Flat No / Building No Required.
+          </span>
+          <span class="error" *ngIf="isSubmitted && errorControl.buildingNumber.errors?.minlength">
+            Flat No / Building No should be min 2 length long.
+          </span>
+        </ion-item>
+
+        <ion-item class="animate__animated animate__fadeInUp" lines="none">
+          <div class="item_inner d-flex">
+            <div class="input_box">
+              <ion-label mode="md" position="stacked">{{"Building Name" | translate}} <span class="start">*</span></ion-label>
+              <ion-input formControlName="buildingName" mode="md" type="text" placeholder=""></ion-input>
+            </div>
+          </div>
+          <span class="error" *ngIf="isSubmitted && errorControl.buildingName.errors?.required">
+            Building Name No Required.
+          </span>
+          <span class="error" *ngIf="isSubmitted && errorControl.buildingName.errors?.minlength">
+            Building Name No should be min 2 length long.
+          </span>
+        </ion-item>
+
+        <ion-item class="animate__animated animate__fadeInUp" lines="none">
+          <div class="item_inner d-flex">
+            <div class="input_box">
+              <ion-label mode="md" position="stacked">{{"Area" | translate}} <span class="start">*</span></ion-label>
+              <ion-input formControlName="area" mode="md" type="text" placeholder=""></ion-input>
+            </div>
+          </div>
+          <span class="error" *ngIf="isSubmitted && errorControl.area.errors?.required"> Area No Required. </span>
+          <span class="error" *ngIf="isSubmitted && errorControl.area.errors?.minlength">
+            Area No should be min 2 length long.
+          </span>
+        </ion-item>
+
+        <ion-item class="animate__animated animate__fadeInUp" lines="none">
+          <div class="item_inner d-flex">
+            <div class="input_box">
+              <ion-label mode="md" position="stacked">{{"Phone Number" | translate}} <span class="start">*</span></ion-label>
+              <ion-input formControlName="phoneNumber" mode="md" type="text" placeholder=""></ion-input>
+            </div>
+          </div>
+          <span class="error" *ngIf="isSubmitted && errorControl.phoneNumber.errors?.required">
+            Phone Number is required.
+          </span>
+          <span class="error" *ngIf="isSubmitted && errorControl.phoneNumber.errors?.minlength">
+            Phone Number should be min 10 digit long.
+          </span>
+        </ion-item>
+
+        <ion-item class="animate__animated animate__fadeInUp" lines="none">
+          <div class="item_inner d-flex">
+            <div class="input_box">
+              <ion-label mode="md" position="stacked">{{"Landmark" | translate}} <span class="start">*</span></ion-label>
+              <ion-input formControlName="landmark" mode="md" type="text" placeholder=""></ion-input>
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="animate__animated animate__fadeInUp" lines="none">
+          <div class="item_inner d-flex">
+            <div class="input_box">
+              <ion-label mode="md" position="stacked">{{"Reciver Phone number" | translate}} (optional)</ion-label>
+              <ion-input formControlName="reciverPhoneNumber" mode="md" type="text" placeholder=""></ion-input>
+            </div>
+          </div>
+          <span class="error" *ngIf="isSubmitted && errorControl.reciverPhoneNumber.errors?.minlength">
+            Reciver Phone Number should be min 10 digit long.
+          </span>
+        </ion-item>
+        <ion-item lines="none" [routerLink]="['/set-location', 'go-back']">
+          <div class="address">
+            <h2 class="d-flex">
+              <span class="map_pin"></span> {{ mapFullAddress ? mapFullAddress : 'Please click to choose location' }}
+            </h2>
+          </div>
+        </ion-item>
+      </div>
+    </ion-list>
+</div>
+  </form>
+
+</ion-content>
+
+<ion-footer class="ion-no-border animate__animated animate__fadeInUp" *ngIf="!isLoading && !serverError">
+  <ion-button type="submit" size="large" expand="full" class="btn" (click)="documentEditAddressForm.ngSubmit.emit()"
+    >{{ 'Save Address' | translate}}</ion-button
+  >
+</ion-footer>

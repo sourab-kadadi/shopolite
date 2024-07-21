@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="" icon="chevron-back-outline" defaultHref="/tabs/my_account"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{'support' | translate}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="banner">
+    <div class="logo ion-text-center animate__animated animate__zoomIn">
+      <img src="assets/images/shopolite-logo.png" class="light_theme_logo">
+      <img src="assets/images/shopolite-logo.png" class="dark_theme_logo">
+    </div>
+  </div>
+
+  <div class="form">
+    <ion-list lines="none">
+      <!-- skeleton text start   -->
+      <h2 *ngIf="isLoading" class="animate__animated animate__fadeInUp">
+        <ion-skeleton-text animated style="width: 65%"></ion-skeleton-text>
+      </h2>
+      <p *ngIf="isLoading" class="animate__animated animate__fadeInUp">
+        <ion-skeleton-text animated style="width: 55%"></ion-skeleton-text>
+      </p>
+      <!-- skeleton text end   -->
+      <h2 *ngIf="!isLoading" class="animate__animated animate__fadeInUp">{{'or_write_us_your_queries' | translate}}</h2>
+      <p *ngIf="!isLoading" class="animate__animated animate__fadeInUp">{{'will_get_back_to_soon' | translate}}.</p>
+      <form #documentEdit="ngForm" [formGroup]="modelForm" (ngSubmit)="createSupport()" novalidate>
+        <ion-item class="animate__animated animate__fadeInUp" lines="none">
+          <!-- skeleton text start -->
+          <div class="item_inner d-flex" *ngIf="isLoading">
+            <div class="icon_box ion-text-start">
+              <ion-skeleton-text animated="true" style="width: 25px; height: 25px"></ion-skeleton-text>
+            </div>
+            <div class="input_box">
+              <ion-skeleton-text position="stacked" animated style="width: 40%"></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 55%"></ion-skeleton-text>
+            </div>
+          </div>
+          <!-- skeleton text end -->
+          <div class="item_inner d-flex" *ngIf="!isLoading">
+            <div class="icon_box ion-text-start"><img src="assets/images/ic_phone.png"></div>
+            <div class="input_box">
+              <ion-label mode="md" position="stacked">{{"phone_number" | translate}}</ion-label>
+              <ion-input mode="md" type="number" placeholder="Contact number" formControlName="phoneNumberRes">
+              </ion-input>
+            </div>
+          </div>
+        </ion-item>
+        <ion-item class="animate__animated animate__fadeInUp" lines="none">
+          <!-- skeleton text start -->
+          <div class="item_inner d-flex" *ngIf="isLoading">
+            <div class="icon_box ion-text-start">
+              <ion-skeleton-text animated="true" style="width: 25px; height: 25px"></ion-skeleton-text>
+            </div>
+            <div class="input_box">
+              <ion-skeleton-text position="stacked" animated style="width: 40%"></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+            </div>
+          </div>
+          <!-- skeleton text end -->
+          <div class="item_inner d-flex" *ngIf="!isLoading">
+            <div class="icon_box ion-text-start"><img src="assets/images/ic_mail.png"></div>
+            <div class="input_box">
+              <ion-label mode="md" position="stacked">{{"your_message" | translate}}</ion-label>
+              <ion-textarea rows="4" mode="md" type="text" placeholder="{{'enter_your_message_heare' | translate}}"
+                formControlName="messageRes"></ion-textarea>
+              <ion-note *ngIf="!modelForm.get('messageRes').valid && modelForm.get('messageRes').touched" color="danger"
+                position="floating" class="ion-padding">
+                Please enter a message
+              </ion-note>
+            </div>
+          </div>
+        </ion-item>
+      </form>
+    </ion-list>
+  </div>
+</ion-content>
+
+<ion-footer class="ion-no-border animate__animated animate__fadeInUp">
+  <ion-button type="submit" size="large" expand="full" class="btn" (click)="documentEdit.ngSubmit.emit()"
+    [disabled]="!modelForm.valid">{{'submit' | translate}}</ion-button>
+</ion-footer>

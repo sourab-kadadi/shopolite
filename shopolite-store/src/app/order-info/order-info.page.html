@@ -1,0 +1,311 @@
+<ion-header [ngClass]="viewType === 'active' ? 'active':''">
+    <ion-toolbar>
+        <ion-buttons slot="start" mode="md">
+            <ion-back-button text="" icon="chevron-back-outline" defaultHref="/tabs/my_orders"></ion-back-button>
+        </ion-buttons>
+        <ion-title>
+          <div class="title">
+            <ion-icon class="zmdi zmdi-chevron-down center" (click)="setViewType(null)" (click)="setViewTypeB(null)"></ion-icon>
+            Order Details
+          </div>
+          </ion-title>
+    </ion-toolbar>
+    <ion-item lines="none" *ngIf="isLoading">
+      <div class="item_inner" >
+        <div class="item_info d-flex">
+            <div class="itme_img">
+              <ion-thumbnail slot="start" style="width: 45px; height: 45px">
+                <ion-skeleton-text animated="true" style="width: 45px; height: 45px"></ion-skeleton-text>
+              </ion-thumbnail>
+            </div>
+            <div class="d-flex">
+                <div class="item_details">
+                  <h3 class="d-flex animate__animated animate__fadeInUp">
+                    <ion-skeleton-text animated style="width: 45%"></ion-skeleton-text>
+                 </h3>
+                  <h3 class="d-flex animate__animated animate__fadeInUp">
+                    <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+                    </h3>
+                    <h4 class="d-flex animate__animated animate__fadeInUp"> <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text></h4>
+                </div>
+                <div class="icon_box end">
+                    <!-- <ion-icon class="zmdi zmdi-comment-alt-text ion-text-start" (click)="chat_customer()"></ion-icon> -->
+                    <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                </div>
+            </div>
+        </div>
+    </div>
+  </ion-item>
+    <ion-item lines="none" *ngIf="!isLoading && isActive">
+        <div class="item_inner" >
+            <div class="item_info d-flex">
+                <div class="itme_img">
+                    <img src="{{ s3path + orderDetails?.category.image.filePath }}">
+                </div>
+                <div class="d-flex">
+                    <div class="item_details">
+                      <h3 class="d-flex animate__animated animate__fadeInUp">
+                       {{orderDetails?.address.fullName}}
+                     </h3>
+                      <h3 class="d-flex animate__animated animate__fadeInUp">
+                           Order No. {{orderDetails?.orderGroupId}}
+                        </h3>
+                        <h4 class="d-flex animate__animated animate__fadeInUp">{{orderDetails?.createdAt | date: 'MMM d, y,  h:mm a'}}</h4>
+                    </div>
+                    <div class="icon_box end">
+                        <!-- <ion-icon class="zmdi zmdi-comment-alt-text ion-text-start" (click)="chat_customer()"></ion-icon> -->
+                       <a href="{{'tel:'+ orderDetails?.address.phoneNumber}}">
+                        <ion-icon class="zmdi zmdi-phone ion-text-end"></ion-icon>
+                      </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-item>
+
+</ion-header>
+
+<ion-content class="bg_color" fullscreen>
+    <ion-list lines="none">
+
+      <!-- skeleton text start -->
+      <div *ngIf="isLoading">
+      <div class="item_list animate__animated animate__fadeInUp">
+        <h1><ion-skeleton-text animated style="width: 15%"></ion-skeleton-text></h1>
+        <ion-item class="animate__animated animate__fadeInUp">
+            <div class="item_inner">
+                <div class="text_box">
+                    <h3><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></h3>
+                    <div class="buttons d-flex">
+                        <h5><ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></h5>
+                        <h4 class="ion-text-end end"> <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></h4>
+                    </div>
+                </div>
+                <div class="text_box">
+                  <h3><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3>
+                  <div class="buttons d-flex">
+                      <h5><ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></h5>
+                      <h4 class="ion-text-end end"> <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></h4>
+                  </div>
+              </div>
+            </div>
+        </ion-item>
+    </div>
+    <div class="form animate__animated animate__fadeInUp">
+        <ion-item lines="none">
+            <div class="item_inner d-flex">
+                <!-- <div class="icon_box ion-text-start"><img src="assets/images/ic_instruction.png"></div> -->
+                <div class="input_box">
+                  <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
+                </div>
+            </div>
+        </ion-item>
+    </div>
+
+    <div class="payment_info animate__animated animate__fadeInUp">
+        <h1><ion-skeleton-text animated style="width: 40%"></ion-skeleton-text></h1>
+        <ion-item class="animate__animated animate__fadeInUp">
+            <div class="item_inner">
+                <h3 class="d-flex"><ion-skeleton-text animated style="width: 30%"></ion-skeleton-text> <span class="end"><ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></span></h3>
+            </div>
+        </ion-item>
+        <ion-item class="animate__animated animate__fadeInUp">
+            <div class="item_inner">
+                <h3 class="d-flex"><ion-skeleton-text animated style="width: 35%"></ion-skeleton-text> <span  class="end"><ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></span></h3>
+            </div>
+        </ion-item>
+        <ion-item class="animate__animated animate__fadeInUp">
+            <div class="item_inner">
+                <h2 class="d-flex"><ion-skeleton-text animated style="width: 40%"></ion-skeleton-text> <span class="end"><ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></span></h2>
+            </div>
+        </ion-item>
+    </div>
+  </div>
+<!-- skeleton text end -->
+
+<div *ngIf="!isLoading && isActive" style="margin-bottom: 78px;">
+      <div class="item_list animate__animated animate__fadeInUp">
+            <h1>{{'items' | translate}}</h1>
+            <ion-item class="animate__animated animate__fadeInUp" *ngFor="let order of orderDetails?.orderList">
+                <div class="item_inner">
+                    <div class="text_box d-flex">
+                                <div class="img_box">
+                                <img src="{{ s3path + order.image.filePath }}">
+                            </div>
+                        <div  class="order-data">
+                        <h3>{{order.productName}}</h3>
+                        <div class="order-list-price buttons d-flex">
+                            <div >
+                                <p class="total-amount ion-text-end" *ngIf="order">
+                                    <span class="currency"> ₹ </span> <strong> {{ order.totalSellingPrice}} </strong>
+                                    <strong class="discount-frame" *ngIf="order.discount?.value &&  order.discount?.type"
+                                      ><span *ngIf="order.discount?.type == 'AMOUNT'"> Flat ₹ </span
+                                      >{{order.discount?.value}}<span *ngIf="order.discount?.type == 'PERCENTAGE'">
+                                        %
+                                      </span></strong
+                                    >
+                                  </p>
+                                  <p
+                                  class="discount"
+                                  *ngIf="order && order.discount?.value &&  order.discount?.type"
+                                >
+                                  <span class="main-frame">
+                                    <span> <span class="currency"> ₹ </span> <strong> {{order.totalOriginalPrice}} </strong> </span>
+                                  </span>
+                                </p>
+                                </div>
+                            <h5 class="end" *ngIf="order.offerUnit"> {{order.unitValue}} {{order.unit}} ({{order.offerUnit}}) x {{order.quantity}}</h5>
+                            <h5 class="end" *ngIf="!order.offerUnit"> {{order.unitValue}} {{order.unit}} x {{order.quantity}}</h5>
+                            <!-- <h4 class="ion-text-end end"> ₹ {{order.totalSellingPrice}}</h4> -->
+
+                        </div>
+                        </div>
+                        <!-- <div class="buttons d-flex">
+                            <h5>{{order.unitValue}} {{order.unit}} x {{order.quantity}}</h5>
+                            <h4 class="ion-text-end end"> ₹ {{order.totalSellingPrice}}</h4>
+                        </div> -->
+                    </div>
+                </div>
+            </ion-item>
+        </div>
+
+        <!-- <div class="form animate__animated animate__fadeInUp" >
+            <ion-item lines="none">
+                <div class="item_inner d-flex">
+                    <div class="icon_box ion-text-start"><img src="assets/images/ic_instruction.png"></div>
+                    <div class="input_box">
+                        <ion-input mode="md" type="name" readonly="boolean" value="Keep tomatoes in saperate bag please."></ion-input>
+                    </div>
+                </div>
+            </ion-item>
+        </div> -->
+
+        <div class="form">
+          <ion-item lines="none">
+              <div class="item_inner d-flex">
+                  <div class="icon_box ion-text-start"><img src="assets/images/ic_instruction.png"></div>
+                  <div class="input_box">
+                      <ion-input [disabled]="isDisabled" mode="md" [value]="orderDetails?.note" type="name"></ion-input>
+                  </div>
+              </div>
+          </ion-item>
+      </div>
+
+        <div class="payment_info animate__animated animate__fadeInUp">
+            <h1>{{'payment_info' | translate}}</h1>
+            <ion-item class="animate__animated animate__fadeInUp">
+                <div class="item_inner">
+                    <h3 class="d-flex">{{'sub_total' | translate}} <span class="end">₹ {{orderDetails?.totalCartOriginalPrice}}</span></h3>
+                </div>
+            </ion-item>
+            <ion-item class="animate__animated animate__fadeInUp" *ngIf="orderDetails?.totalCartDiscount">
+                <div class="item_inner">
+                    <h3 class="d-flex">{{'Discount' | translate}}<span class="color-green-subtitle end"> - ₹ {{orderDetails?.totalCartDiscount}}</span></h3>
+                </div>
+            </ion-item>
+            <ion-item class="animate__animated animate__fadeInUp">
+                <div class="item_inner">
+                    <h3 class="d-flex">{{'delivery_charge' | translate}}
+                        <!-- <span  class="end" style="text-decoration: line-through;padding-right: 5px">Rs 10 </span -->
+                        <span class="color-green-subtitle end"> FREE</span></h3>
+                </div>
+            </ion-item>
+            <ion-item class="animate__animated animate__fadeInUp">
+                <div class="item_inner">
+                    <h2 class="d-flex">Cash on Delivery <span class="end">₹ {{orderDetails?.totalCartCost}}</span></h2>
+                </div>
+            </ion-item>
+        </div>
+      </div>
+    </ion-list>
+
+
+
+
+    <!-- <div [ngClass]="viewTypeB === 'active' ? 'chat_option active':'chat_option'">
+        <div class="chat_container d-flex">
+            <div class="chat_box d-flex send">
+                <div class="chat">
+                    <h2>Hey there? <br> How much time?</h2>
+                    <p>11:58 am</p>
+                </div>
+            </div>
+
+            <div class="chat_box d-flex  received">
+                <div class="chat">
+                    <h2>On my way ma'm <br>Will reach in 10 mins.</h2>
+                    <p>11:59 am</p>
+                </div>
+            </div>
+        </div>
+        <div class="form">
+            <ion-list lines="none d-flex">
+                <ion-item lines="none">
+                    <ion-textarea rows="1"  auto-grow="true" type="text" placeholder="{{'type_your_meassage' | translate}}"></ion-textarea>
+                </ion-item>
+                <div class="send_btn end">
+                    <ion-icon class="zmdi zmdi-mail-send"></ion-icon>
+                </div>
+            </ion-list>
+        </div>
+    </div> -->
+</ion-content>
+
+<ion-footer class="ion-no-border animate__animated animate__fadeInUp" *ngIf="!isLoading && isActive">
+  <ion-list class="animate__animated animate__fadeInUp" lines="none" [ngClass]="viewType == 'active' ? 'track_delivery active':'track_delivery'" *ngIf="!isLoading && isActive ">
+    <ion-item class="profile_info" (click)="setViewType('active')">
+        <div class="item_inner d-flex">
+            <div class="img_box center_img">
+              <ion-avatar slot="start" class="profile-pic">
+                <img src="https://cdn.pixabay.com/photo/2013/07/13/12/07/avatar-159236_960_720.png">
+              </ion-avatar>
+              <!-- <img src="assets/images/profile-avatar.svg" class="crop_img"> -->
+            </div>
+
+
+
+            <div class="text_box">
+                <h2>{{orderDetails?.address.buildingNumber}}, {{orderDetails?.address.buildingName}}</h2>
+                <h3>{{orderDetails?.address.area}},
+                  {{orderDetails?.address.landmark}}</h3>
+                <!-- <h3>{{orderDetails?.address.mapFullAddress}}</h3>   -->
+
+            </div>
+            <div class="icon_box end">
+                <div class="icon_box_inner">
+                    <ion-icon class="zmdi zmdi-navigation ion-text-end"></ion-icon>
+                </div>
+
+                <div [ngClass]="viewTypeB == 'active' ? 'icon_box_inner active':'icon_box_inner'">
+                    <ion-icon class="zmdi zmdi-comment-alt-text ion-text-start" (click)="setViewTypeB('active')"></ion-icon>
+                    <ion-icon class="zmdi zmdi-close ion-text-start" (click)="setViewTypeB(null)"></ion-icon>
+
+                    <ion-icon class="zmdi zmdi-phone ion-text-end"></ion-icon>
+                </div>
+            </div>
+        </div>
+    </ion-item>
+
+    <div class="map center_img">
+        <!-- <img src="assets/images/map.png" class="crop_img">
+        <div class="delivery_location" style="top: 4%; right: 77%; transform: rotate(-164deg);">
+            <img src="assets/images/deliveryman.png">
+        </div>
+        <ion-icon class="zmdi zmdi-pin ion-text-center" style="top: 20%; right: 79%;"></ion-icon>
+        <ion-icon class="zmdi zmdi-navigation ion-text-center" style="top: 36%; right: 35%;"></ion-icon> -->
+
+        <agm-map [latitude]="orderDetails?.storeDetails?.location?.coordinates[0]" [longitude]="orderDetails?.storeDetails?.location?.coordinates[1]" [zoom]="100" (mapReady)="onMapReady($event)">
+        <agm-direction [origin]="origin" [destination]="destination" [markerOptions]="markerOptions"  [renderOptions]="renderOptions"
+        ></agm-direction>
+          </agm-map>
+    </div>
+</ion-list>
+    <ion-button size="large" expand="full" (click)="readytoDeliver(orderDetails._id)" class="btn" *ngIf="orderDetails?.orderStatus==='ACCEPT'">{{'ready_to_deliver' | translate}}</ion-button>
+    <!-- <ion-button size="large" expand="full" (click)="delivered(orderDetails._id)" class="btn" *ngIf="orderDetails?.orderStatus==='READY_TO_DELIVER'">{{'Confirm Delivered' | translate}}</ion-button> -->
+    <ion-button size="large" expand="full" color="light" class="btn" *ngIf="orderDetails?.orderStatus === 'DELIVERED'">{{'Order Delivered ... Thank you :)' | translate}}</ion-button>
+    <ion-button size="large" expand="full" color="light" class="btn" *ngIf="orderDetails?.orderStatus === 'REJECT'">{{'Order Rejected :(' | translate}}</ion-button>
+    <div class="acc-rej-button d-flex">
+        <ion-button  size="default"  fill="outline" expand="full" (click)="reject(orderDetails._id)" class="reject-order-btn" *ngIf="orderDetails?.orderStatus==='PENDING'">{{'Reject' | translate}}</ion-button>
+        <ion-button size="default" expand="full" class="btn"  (click)="accept(orderDetails._id)"  *ngIf="orderDetails?.orderStatus==='PENDING'">{{'Accept' | translate}}</ion-button>
+    </div>
+</ion-footer>

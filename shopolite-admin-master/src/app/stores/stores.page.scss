@@ -1,0 +1,44 @@
+ion-toggle {
+    width: 100px;
+    margin-bottom: 6px;
+    position: relative;
+    color: white;
+    font-size: 15px;
+    line-height: 31px;
+    --background: #b23535;
+    --background-checked: #428b51;
+    --handle-background: #ffffff;
+    --handle-background-checked: #ffffff;
+  }
+  
+  ion-toggle[aria-checked="false"]{
+    &::after {
+     position: absolute;
+     content: "Offline";
+     top: 20px;
+     right: 22px;
+     letter-spacing: 1px;
+    }
+  }
+  
+  ion-toggle[aria-checked="true"]{
+   &::after {
+     position: absolute;
+     content: "Online";
+     top: 20px;
+     right: 50px;
+     letter-spacing: 1px;
+   }
+  }
+  
+  
+  .toggle_class {
+    padding-top: 18px;
+      padding-right: 11px;
+  }
+  
+  
+  .ion-color-success {
+    --ion-color-base: #2ea45d !important;
+  }
+  

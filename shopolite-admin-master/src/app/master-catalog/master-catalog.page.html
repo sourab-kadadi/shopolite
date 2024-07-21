@@ -1,0 +1,180 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home-page"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center header-margin-left">Master Catalog</ion-title>
+
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-grid>
+
+      <ion-item>
+        <ion-col size="3">
+          <ion-item>
+            <ion-label>Category</ion-label>
+            <ionic-selectable #selectComponentCategory item-content [(ngModel)]="itemCat" itemValueField="_id"
+              itemTextField="name" [items]="categoriesData" [canSearch]="true" (onChange)="itemChangeCategory($event)">
+            </ionic-selectable>
+            <ion-item *ngIf="this.filter.categoryId ">
+              <ion-label>Sub Category</ion-label>
+              <ionic-selectable #selectComponentSubCat item-content [(ngModel)]="itemSubCat" itemValueField="_id"
+                itemTextField="name" [items]="subCategoriesData" [canSearch]="true"
+                (onChange)="itemChangeSubCat($event)">
+              </ionic-selectable>
+            </ion-item>
+
+          </ion-item>
+        </ion-col>
+        <ion-col size="2">
+          <ion-searchbar #search placeholder="Search by product name, Barcode, category" enterkeyhint="enter"
+            (ionChange)="onSearchChange($event)" debounce="200"></ion-searchbar>
+        </ion-col>
+
+        <ion-col size="1">
+          <ion-select placeholder="Filter by"  (ionChange)="onDropdownSelectionFilter($event)">
+            <ion-select-option value="VERIFIED">Verified</ion-select-option>
+            <ion-select-option value="NOTVERIFIED">Not-Verified</ion-select-option>
+            <!-- <ion-select-option value="REJECTED">Rejected</ion-select-option>
+            <ion-select-option value="ALL">All Payments</ion-select-option> -->
+          </ion-select>
+        </ion-col>
+        <ion-col size="1">
+        <ion-item>
+          <!-- <ion-label></ion-label> -->
+          <ion-input type="number" placeholder="Page number" (ionChange)="pageChange($event)" debounce="200"></ion-input>
+        </ion-item>
+      </ion-col>
+        <ion-col size="4">
+          <pagination-controls id="listing" (pageChange)="pageChanged($event)" previousLabel="Previous" nextLabel="Next"
+            screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+            screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+        </ion-col>
+      </ion-item>
+      <!-- <ion-row> -->
+      <ion-item>
+        <ion-col size="3">
+          <ion-label><b>Front Image <br> Product Images</b></ion-label>
+        </ion-col>
+        <ion-col size="2">
+          <ion-label><b>Product Name</b></ion-label>
+        </ion-col>
+        <ion-col size="1">
+          <ion-label><b>Brand</b></ion-label>
+        </ion-col>
+        <ion-col size="1">
+          <ion-label><b>Subcategory and Keyword</b></ion-label>
+        </ion-col>
+        <ion-col size="1">
+          <ion-label><b>Quantity</b></ion-label>
+        </ion-col>
+        <ion-col size="1">
+          <ion-label><b>MRP</b></ion-label>
+        </ion-col>
+        <ion-col size="1">
+          <ion-label><b>Barcode</b></ion-label>
+        </ion-col>
+        <ion-col size="2">
+          <ion-label><b>Verified, Status and Comment & <br> option</b></ion-label>
+        </ion-col>
+      </ion-item>
+      <!-- </ion-row> -->
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <!-- <ngx-ui-loader [loaderId]="'loader-category-list'" class="full"></ngx-ui-loader> -->
+  <ion-refresher slot="fixed" pullFactor="0.9" pullMin="60" pullMax="200" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Pull to refresh"
+      refreshingSpinner="circles" refreshingText="Refreshing..." class="ion-padding-top-refresh">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-grid>
+
+    <!-- <ion-item *ngFor="let item of categoryData; let i = index" [routerLink]="['./update', item._id]"> -->
+    <!-- <ion-item *ngFor="let item of data | paginate: {id: 'listing', itemsPerPage: 10, currentPage: this.filter.page, totalItems: totalCount}"> -->
+
+    <ion-item
+      *ngFor="let item of data | paginate: {id: 'listing', itemsPerPage: this.filter.count, currentPage: this.filter.page, totalItems: totalCount}"
+      class="table-listing">
+
+
+
+      <ion-col size="3">
+        <div *ngIf="item.image && item.image.filePath" class="image-margin-right img_box image-display-size">
+          <ion-img class="image-display-size" src="{{ s3path + item.image.filePath }}"></ion-img>
+        </div>
+        <div class="line" *ngIf="item.media && item.media.length>0"></div>
+        <ion-item *ngFor="let imageProduct of item.media">
+          <!-- <ion-col size="2"> -->
+          <div *ngIf="item.image && item.image.filePath" class="image-margin-right img_box">
+            <ion-img class="image-display-size" src="{{ s3path + imageProduct.filePath }}"></ion-img>
+          </div>
+          <!-- <div *ngIf="item.image && item.image.filePath" class="image-margin-right img_box">
+        <ion-img src="{{ s3path + imageProduct.filePath }}"></ion-img>
+      </div> -->
+          <!-- </ion-col> -->
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-text>{{ item?.name }}</ion-text> <br>
+      </ion-col>
+      <ion-col size="1">
+        <ion-text>{{ item?.brandName }}</ion-text>
+      </ion-col>
+      <ion-col size="1">
+        <ion-text>Cat - {{ item?.categoryName }} <br>
+          Sub - {{ item?.subCategoryName }} <br> Keyword - {{item?.keyWord[0]}}</ion-text>
+      </ion-col>
+      <ion-col size="1">
+        <ion-text>{{ item?.unitValue }}{{item?.unit}}{{ item?.offerUnit }}</ion-text>
+      </ion-col>
+      <ion-col size="1">
+        <ion-text>{{ item?.originalPrice}}</ion-text>
+      </ion-col>
+      <ion-col size="1">
+        <ion-text>{{ item?.barcode }}</ion-text>
+      </ion-col>
+      <ion-col size="1">
+        <ion-text>Verified - {{ item?.verified }}<br>
+          Status - {{ item?.status }} <br>
+<p *ngIf="item.comment">          Comment - {{item?.comment}}</p>
+
+          <!-- <ion-button routerDirection="forward" [routerLink]="['./update', item._id]" (click)="openLink(item._id)">Edit</ion-button> -->
+          <ion-button routerDirection="forward" (click)="openLink(item._id)">Edit</ion-button>
+        </ion-text>
+      </ion-col>
+
+    </ion-item>
+    <!-- <pagination-controls  id="some_id"
+                      (pageChange)="pageChanged($event)"
+                      (pageBoundsCorrection)="pageChanged($event)"
+                      maxSize="9"
+                      directionLinks="true"
+                      [autoHide] = true
+                      responsive="true"
+                      previousLabel="Previous"
+                      nextLabel="Next"
+                      screenReaderPaginationLabel="Pagination"
+                      screenReaderPageLabel="page"
+                      screenReaderCurrentLabel="You're on page">
+</pagination-controls> -->
+
+
+  </ion-grid>
+
+
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" [routerLink]="['create']">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <!-- <ion-button [routerLink]="['create']" type="button"><ion-icon name="add-outline"></ion-icon> Add</ion-button> -->
+
+
+</ion-content>

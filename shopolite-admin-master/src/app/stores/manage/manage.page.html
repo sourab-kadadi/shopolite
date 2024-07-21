@@ -1,0 +1,240 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/stores"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Store Details</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ngx-ui-loader [loaderId]="'loader-stores-manage'" class="full"></ngx-ui-loader>
+    <ion-grid>
+
+        <div>
+            <form #documentEditStoreForm="ngForm" [formGroup]="storeForm" (ngSubmit)="submitForm()" novalidate>
+                <div *ngIf="!isLoading">
+                    <ion-list lines="none">
+                        <ion-item class="feature_image animate__animated animate__fadeInUp" *ngIf="!isLoading">
+                            <div class="item_inner">
+                                <h2> {{'feature_image' | translate}}</h2>
+                                <ion-row class="imageSection">
+                                    <ion-col>
+                                        <app-image-upload class="logoImagePosition" [idFor]="'1'" [title]="'logo'"
+                                            [icon]="'image'" [imageData]="logo" [height]="'150px'" [width]="'150px'"
+                                            (onSave)="storeLogo($event)"></app-image-upload>
+                                    </ion-col>
+                                    <ion-col size="12">
+                                        <app-image-upload [idFor]="'2'" [title]="'Shop'" [icon]="'storefront'"
+                                            [imageData]="storeImage" [height]="'258px'" [width]="'540px'"
+                                            (onSave)="storeImageLogo($event)"></app-image-upload>
+                                    </ion-col>
+                                </ion-row>
+                            </div>
+                        </ion-item>
+
+                        <div class="form animate__animated animate__fadeInUp">
+                            <h2>{{'store_info' | translate}}</h2>
+
+                            <ion-row>
+                                <!-- <ion-column size="12" size-md="6" class="column_width"> -->
+                                    <ion-item class="animate__animated animate__fadeInUp" lines="none">
+                                        <div class="item_inner d-flex">
+                                            <div class="input_box">
+                                                <ion-label mode="md" position="stacked">{{"Store Type" |
+                                                    translate}}</ion-label>
+                                                <div class="d-flex" style="align-items: flex-end;">
+                                                    <ion-select formControlName="storeType"
+                                                        [compareWith]="compareWithFn" (ionChange)="onSelection($event)" [disabled]="true">
+                                                        <ion-select-option *ngFor="let storeType of storeTypes"
+                                                            [value]="storeType">{{storeType.name}}</ion-select-option>
+                                                    </ion-select>
+                                                    <ion-icon
+                                                        class="zmdi zmdi-chevron-down ion-text-end end"></ion-icon>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="error ion-padding"
+                                            *ngIf="isSubmitted && storeForm.get('storeTypes')?.hasError('required')">
+                                            Please select store Type.
+                                        </span>
+                                    </ion-item>
+                                <!-- </ion-column> -->
+                                <!-- <ion-column size="12" size-md="6" class="column_width"> -->
+                                    <ion-item class="animate__animated animate__fadeInUp" lines="none">
+                                        <div class="item_inner d-flex">
+                                            <div class="input_box">
+                                                <ion-label mode="md" position="stacked">{{"store_name" |
+                                                    translate}}</ion-label>
+                                                <ion-input formControlName="businessName" mode="md" type="name"
+                                                    placeholder="" value="Business Name" [disabled]="true" ></ion-input>
+                                            </div>
+                                        </div>
+                                        <span class="error"
+                                            *ngIf="isSubmitted && errorControl.businessName.errors?.required">
+                                            Business Name is required.
+                                        </span>
+                                        <span class="error"
+                                            *ngIf="isSubmitted && errorControl.businessName.errors?.minlength">
+                                            Business Name should be min 2 chars long.
+                                        </span>
+                                    </ion-item>
+                                <!-- </ion-column> -->
+                            </ion-row>
+                            <ion-row>
+                                <!-- <ion-column size="12" size-md="6" class="column_width"> -->
+                                    <ion-item class="animate__animated animate__fadeInUp" lines="none">
+                                        <div class="item_inner d-flex">
+                                            <div class="input_box">
+                                                <ion-label mode="md" position="stacked">{{"store_category" |
+                                                    translate}}</ion-label>
+                                                <div class="d-flex" style="align-items: flex-end;">
+                                                    <ion-select formControlName="businessCategoryId"
+                                                        (ionChange)="onSelection($event)" [multiple]="true" [disabled]="true">
+                                                        <ion-select-option *ngFor="let category of categories"
+                                                            [value]="category._id">{{category.name}}</ion-select-option>
+                                                    </ion-select>
+                                                    <ion-icon
+                                                        class="zmdi zmdi-chevron-down ion-text-end end"></ion-icon>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="error"
+                                            *ngIf="isSubmitted && storeForm.get('businessCategoryId')?.hasError('required')">
+                                            Business Category is required.
+                                        </span>
+                                        <span class="error"
+                                            *ngIf="isSubmitted && storeForm.get('businessCategoryId')?.hasError('minlength')">
+                                            Business Category is required.
+                                        </span>
+                                    </ion-item>
+                                <!-- </ion-column> -->
+
+
+
+                                <!-- <ion-column size="12" size-md="6" class="column_width"> -->
+                                    <!-- <ion-item class="animate__animated animate__fadeInUp" lines="none">
+                <div class="item_inner d-flex">
+                    <div class="input_box">
+                        <ion-label mode="md" position="stacked">{{"phone_number" | translate}}</ion-label>
+                        <ion-input formControlName="phoneNo" mode="md" type="text" placeholder="" value="+1 987 654 3210"></ion-input>
+                    </div>
+                </div>
+            </ion-item>
+
+            <span class="error" *ngIf="isSubmitted && errorControl.phoneNo.errors?.required">
+                Phone Number is required.
+              </span>
+              <span class="error" *ngIf="isSubmitted && errorControl.phoneNo.errors?.minlength">
+                Phone Number should be min 10 digit long.
+              </span> -->
+                                <!-- </ion-column> -->
+                                <!-- <ion-column size="12" size-md="6" class="column_width"> -->
+                                    <ion-item class="animate__animated animate__fadeInUp" lines="none">
+                                        <div class="item_inner d-flex">
+                                            <div class="input_box">
+                                                <ion-label mode="md" position="stacked">{{"address" |
+                                                    translate}}</ion-label>
+                                                <ion-input formControlName="address1" mode="md" type="text"
+                                                    placeholder="" value="storename@email" [disabled]="true"></ion-input>
+                                            </div>
+                                        </div>
+                                        <span class="error"
+                                            *ngIf="isSubmitted && storeForm.get('address1').hasError('required')">
+                                            Address 1 is required.
+                                        </span>
+                                    </ion-item>
+                                <!-- </ion-column> -->
+                            </ion-row>
+                        </div>
+                        <ion-item lines="none" class="address animate__animated animate__fadeInUp"
+                            (click)="set_location()">
+                            <div class="item_inner">
+                                <h2>{{'locate_me_in_map' | translate}}</h2>
+                                <p class="d-flex">
+                                    <ion-icon class="zmdi zmdi-pin ion-text-start"></ion-icon>
+                                    {{mapFullAddress || 'Please Select Shop Location'}}
+                                </p>
+                            </div>
+                        </ion-item>
+                        <div formGroupName="timing" class="form store_timings animate__animated animate__fadeInUp">
+                            <h2>{{'store_timings' | translate}}</h2>
+                            <ion-row class="animate__animated animate__fadeInUp">
+                                <ion-col size="6">
+                                    <ion-item lines="none">
+                                        <div class="item_inner d-flex">
+                                            <div class="input_box">
+                                                <ion-label mode="md" position="stacked">{{"opening_time" |
+                                                    translate}}</ion-label>
+                                                <input type="time" atp-time-picker formControlName="startTime"
+                                                    value="20:55" />
+                                            </div>
+                                        </div>
+                                        <span class="error"
+                                            *ngIf="isSubmitted && storeForm.get('timing').get('startTime').hasError('required')">
+                                            Start Time Required.
+                                        </span>
+                                    </ion-item>
+                                </ion-col>
+
+                                <ion-col size="6">
+                                    <ion-item lines="none">
+                                        <div class="item_inner d-flex">
+                                            <div class="input_box">
+                                                <ion-label mode="md" position="stacked">{{"closing_time" |
+                                                    translate}}</ion-label>
+                                                <input type="time" atp-time-picker formControlName="endTime"
+                                                    value="20:55" />
+                                            </div>
+                                        </div>
+                                        <span class="error"
+                                            *ngIf="isSubmitted && storeForm.get('timing').get('endTime').hasError('required')">
+                                            Start Time Required.
+                                        </span>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+                        </div>
+                    </ion-list>
+                </div>
+            </form>
+
+        </div>
+
+
+        <ion-card *ngFor="let timing of timings; let i = index">
+            <ion-card-header>
+                <ion-card-title>
+                    {{timing.nameOfDay}}
+                    <div class="toggle_box isHolidatToggle end" [ngClass]="{'in_stock': timing.isHoliday}">
+                        <span *ngIf="timing.isHoliday">{{'Holiday' | translate}}</span>&nbsp;&nbsp;
+                        <span *ngIf="!timing.isHoliday">{{'Working' | translate}}</span>&nbsp;&nbsp;
+                        <ion-toggle [checked]="timing.isHoliday" mode="ios"
+                            (ionChange)="onStatusChange($event, i)"></ion-toggle>
+                    </div>
+                </ion-card-title>
+
+            </ion-card-header>
+            <ion-card-content class="card-content">
+                <ion-chip *ngFor="let dayTiming of timing.timings; let j = index">
+                    <ion-icon color="tertiary" name="time"></ion-icon>
+                    <ion-label>{{dayTiming?.startTime }} - {{dayTiming?.endTime}}</ion-label>
+                    <ion-icon color="danger" name="close-circle" (click)="deleteTiming(i, j)"></ion-icon>
+                </ion-chip>
+                <ion-fab color="" vertical="bottom" horizontal="end">
+                    <ion-fab-button size="small">
+                        <!-- <ion-icon name="add" (click)="open(i)"></ion-icon> -->
+                        <!-- <ion-icon name="add" ></ion-icon> -->
+                    </ion-fab-button>
+                </ion-fab>
+
+            </ion-card-content>
+        </ion-card>
+
+    </ion-grid>
+</ion-content>
+
+<ion-footer class="ion-no-border animate__animated animate__fadeInUp">
+    <ion-button type="submit" size="large" expand="full" class="btn"
+        (click)="documentEditStoreForm.ngSubmit.emit()">{{'update_info' | translate}}</ion-button>
+</ion-footer>

@@ -1,0 +1,173 @@
+.form {
+    padding: 0;
+    padding-top: 8px;
+}
+
+ion-list {
+    margin: 0;
+    background: none;
+    padding: 0;
+
+    ion-card {
+        width: 100%;
+        background: var(--white);
+        box-shadow: none;
+        border-radius: 0;
+        margin: 0;
+        margin-bottom: 8px;
+        padding: 10px 0;
+        position: relative;
+
+        &.address_info {
+            .dotted_icon {
+                display: block;
+                position: absolute;
+                top: -25px;
+                bottom: 0;
+                left: 8px;
+                margin: auto;
+                height: fit-content;
+
+                span {
+                    display: block;
+                    min-width: 43px;
+                    height: 4.4px;
+                    position: relative;
+                    width: fit-content;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: var(--text-light);
+                        width: 2.5px;
+                        height: 2.5px;
+                        border-radius: 50%;
+                        margin: auto;
+
+                    }
+
+                }
+            }
+        }
+
+        ion-item {
+            margin: 0;
+            padding: 15px 20px;
+
+            .input_box {
+                ion-input {
+                    font-size: 0.9rem !important;
+                }
+            }
+        }
+
+        &.package_type {
+            ion-item {
+
+                .item_inner {
+                    ion-icon {
+                        color: var(--primary);
+                        margin: 0;
+                        font-size: 2rem;
+                        min-width: 22px;
+                        height: 14px;
+                        line-height: 10px;
+                        padding: 0 2px;
+                    }
+                }
+            }
+        }
+
+        &.any_instruction {
+            padding: 0;
+
+            ion-item {
+                padding: 13px 20px;
+
+                .item_inner.d-flex {
+                    align-items: center !important;
+                }
+
+                .icon_box {
+                    position: relative;
+                    top: 2px;
+                }
+
+                .input_box {
+                    border: none !important;
+                    padding: 0 !important;
+
+                    ion-input {
+                        font-size: 0.9rem !important;
+                        --padding-top: 6px !important;
+                        --padding-bottom: 6px !important;
+                    }
+                }
+            }
+        }
+
+    }
+
+
+}
+
+ion-footer {
+    .payment_info {
+        h1 {
+            padding: 15px 20px 5px 20px;
+            margin: 0;
+            color: var(--text-dark);
+            background: var(--white);
+            font-size: .9rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+
+        ion-item {
+            margin-bottom: 1px;
+            --min-height: unset;
+            --inner-padding-end: 0px;
+            --inner-min-height: unset !important;
+            --padding-start: 0;
+            --background: var(--transparent) !important;
+            background: var(--white);
+            padding: 10px 20px;
+            border-bottom: 1px solid var(--bg-color) !important;
+
+
+            .item_inner {
+                width: 100%;
+
+                h3 {
+                    margin: 0;
+                    color: var(--text-black);
+                    font-size: 0.95rem;
+                    font-weight: 400;
+                    letter-spacing: 0.3px;
+                }
+
+                h2 {
+                    margin: 0;
+                    color: var(--text-black);
+                    font-size: 0.95rem;
+                    font-weight: 600;
+                    padding: 0;
+
+                    span {
+                        font-weight: 400;
+                    }
+                }
+            }
+        }
+    }
+
+    .button.btn {
+        --animate-duration: .5s;
+    }
+}

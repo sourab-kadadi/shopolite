@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Shopolite Store</string>
+    <string name="title_activity_main">Shopolite Store</string>
+    <string name="package_name">com.shopolite.seller</string>
+    <string name="custom_url_scheme">com.shopolite.seller</string>
+</resources>

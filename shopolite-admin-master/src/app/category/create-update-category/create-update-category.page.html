@@ -1,0 +1,113 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/category"></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="isCreateMode()" class="ion-text-center header-margin-left">Create Category</ion-title>
+    <ion-title *ngIf="isUpdateMode()" class="ion-text-center header-margin-left">Update Category</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" >
+  <ngx-ui-loader [loaderId]="'loader-category-add'" class="full"></ngx-ui-loader>
+  <!-- <ion-grid *ngIf="isActive"> -->
+    <ion-grid>
+    <form [formGroup]="categoryForm" (ngSubmit)="createCategory()">
+      <ion-item>
+        <ion-col size="6" size-md="6">
+          <ion-item class="Form-Item">
+            <ion-label class="ion-label" position="floating">Category Name<span class="reqired-field">*</span>
+            </ion-label>
+            <ion-input type="text" formControlName="name" placeholder="Category Name"></ion-input>
+            <ion-note *ngIf="
+              !categoryForm.get('name').valid && categoryForm.get('name').touched" color="danger" position="fixed"
+              class="ion-padding">
+              please enter data.
+            </ion-note>
+          </ion-item>
+
+              <ion-item class="Form-Item">
+                <ion-label class="ion-label" position="floating">Manual Ranking<span class="reqired-field">*</span>
+                </ion-label>
+                <ion-input type="text" formControlName="manualRanking" placeholder="Manual Ranking"></ion-input>
+                <ion-note *ngIf="
+                  !categoryForm.get('manualRanking').valid && categoryForm.get('manualRanking').touched" color="danger" position="fixed"
+                  class="ion-padding">
+                  please enter data.
+                </ion-note>
+              </ion-item>
+
+
+          <ion-item class="status-design Form-Item">
+            Display Category ?
+            <ion-toggle formControlName="status" color="primary" ></ion-toggle>
+          </ion-item>
+        <!-- </ion-card> -->
+      </ion-col>
+        <ion-col size="6" size-md="6">
+          <!-- <ion-card class="padding-card"> -->
+
+            <!-- image component -->
+            <!-- image component -->
+            <div class="row" class="profilePic">
+              <label for="uploadImage">
+                <div *ngIf="imageData && imageData.filePath" class="imageMain">
+                  <img width="300px" height="300px" src="{{ s3path + imageData.filePath }}" />
+                  <ion-button class="material-icons cancelButton" color="danger" (click)="deleteFile()">
+                    <ion-icon name="trash-outline"></ion-icon>
+                  </ion-button>
+                </div>
+              </label>
+              <div *ngIf="!(imageData && imageData.filePath)">
+                <label for="uploadImage">
+                  <div class="initImgMain">
+                    <!-- <span class="material-icons"> icon </span> -->
+                    <ion-icon class="icon-size" name="image-outline"></ion-icon> <br>
+                    <p>Select Category Image</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <input type="file" name="uploadImage" id="uploadImage" (change)="uploadFileToS3($event)"
+              accept=".png, .jpg, .jpeg" />
+</ion-col>
+
+      </ion-item>
+
+        <ion-row>
+          <!-- <ion-col size="6" size-md="6">
+            <ion-button color="danger" class="buttom-margin-left"> -->
+              <!-- <ion-icon name="checkmark" slot="icon-only"> </ion-icon> -->
+              <!-- Reset Form
+            </ion-button>
+          </ion-col> -->
+
+          <ion-col>
+
+            <ion-button *ngIf="isCreateMode()" type="submit" [disabled]="!categoryForm.valid" expand="full">
+              <!-- <ion-icon name="checkmark" slot="icon-only"> </ion-icon> -->
+              Create Category
+            </ion-button>
+            <ion-button *ngIf="isUpdateMode()" [disabled]="!categoryForm.valid" expand="full" (click)="updateCategory()">
+              <!-- <ion-icon name="checkmark" slot="icon-only"> </ion-icon> -->
+              Update Category
+            </ion-button>
+          </ion-col>
+        </ion-row>
+    </form>
+  </ion-grid>
+
+  <!-- [(ngModel)]="location" -->
+
+  <!-- <app-image-upload [imageData]="image" (onSave)="saveImage($event)" ></app-image-upload> -->
+
+</ion-content>
+
+
+
+
+
+
+
+
+

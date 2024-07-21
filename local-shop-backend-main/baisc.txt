@@ -1,0 +1,240 @@
+couponList.schema.ts
+import * as mongoose from 'mongoose';
+
+
+export const couponList = new mongoose.Schema ({
+});
+
+couponList.index({customerId: 1});
+
+
+File Name: couponList.controller.ts
+import { Response, Request } from 'express';
+import { HttpExceptionFilter } from '../../exception-handler/http-exception.filter';
+import { MongoExceptionFilter } from '../../exception-handler/mongo-exception.filter';
+import { AllExceptionsFilter } from '../../exception-handler/exception.filter';
+import { CouponListService } from './couponList.service';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpStatus,
+    Param,
+    Post,
+    Put,
+    Req,
+    Res,
+    UseFilters,
+    UseGuards,
+  } from '@nestjs/common';
+  import { AuthGuard } from '@nestjs/passport';
+  import {
+    ApiBadRequestResponse,
+    ApiBearerAuth,
+    ApiConflictResponse,
+    ApiCreatedResponse,
+    ApiInternalServerErrorResponse,
+    ApiOkResponse,
+    ApiRequestTimeoutResponse,
+    ApiTags,
+  } from '@nestjs/swagger';
+  import { IModuleRes } from '../../common.service';
+import { CouponListCreateDto, CouponListUpdateDto, ICouponListfindOneByIdRes } from './couponList.dto';
+
+
+@ApiTags('CouponList')
+@Controller('couponList')
+@UseFilters(AllExceptionsFilter, HttpExceptionFilter, MongoExceptionFilter)
+
+export class CouponListController {
+
+    constructor(private Service: CouponListService){}
+
+    @UseGuards(AuthGuard('JWTaccessToken'))
+    @Post('create')
+    @ApiBearerAuth()
+    @ApiCreatedResponse({ type: IModuleRes, description: 'Created Successfully' })
+    @ApiConflictResponse({ type: IModuleRes, description: 'Conflict' })
+    @ApiBadRequestResponse({ type: IModuleRes, description: 'Bad Request' })
+    @ApiRequestTimeoutResponse({ description: 'Time Out' })
+    async Create(@Body() couponListCreate: CouponListCreateDto, @Req() Req: Request, @Res() Res: Response) {
+      let result = await this.Service.createModule(couponListCreate);
+      Res.status(HttpStatus.CREATED).send(result);
+    }
+
+
+    @UseGuards(AuthGuard('JWTaccessToken'))
+    @Put('update/:documentId')
+    @ApiBearerAuth()
+    @ApiOkResponse({ type: IModuleRes, description: 'Update Successfully' })
+    @ApiConflictResponse({ type: IModuleRes, description: 'Conflict' })
+    @ApiBadRequestResponse({ type: IModuleRes, description: 'Bad Request' })
+    @ApiRequestTimeoutResponse({ description: 'Time Out' })
+    async update(
+      @Body() UpdateCartDto: CouponListUpdateDto,
+      @Param('documentId') documentId: string,
+      @Req() Req: Request,
+      @Res() Res: Response,
+    ) {
+      let result = await this.Service.updateModule(documentId, UpdateCartDto);
+      Res.status(HttpStatus.OK).send(result);
+    }
+
+
+    @UseGuards(AuthGuard('JWTaccessToken'))
+    @Delete('delete/:documentId')
+    @ApiBearerAuth()
+    @ApiOkResponse({ type: IModuleRes, description: 'Update Successfully' })
+    @ApiConflictResponse({ type: IModuleRes, description: 'Conflict' })
+    @ApiBadRequestResponse({ type: IModuleRes, description: 'Bad Request' })
+    @ApiRequestTimeoutResponse({ description: 'Time Out' })
+    async deleteModule(
+      @Param('documentId') documentId: string,
+      @Req() Req: Request,
+      @Res() Res: Response,
+    ) {
+      let result = await this.Service.deleteModule(documentId);
+      Res.status(HttpStatus.OK).send(result);
+    }
+
+
+    @UseGuards(AuthGuard('JWTaccessToken'))
+    @Get("find/:_id")
+    @ApiBearerAuth()
+    @ApiOkResponse({type: ICouponListfindOneByIdRes,description: 'Found Successfully'})
+    @ApiBadRequestResponse({type: IModuleRes,description: 'Bad Request'})
+    @ApiInternalServerErrorResponse({type: IModuleRes,description: 'Internal Server Error'})
+    @ApiRequestTimeoutResponse({description: 'Time Out'})
+    async findOneById(@Param('_id') _id: string, @Req() Req: Request, @Res() Res: Response) {
+            let result = await this.Service.findOneModule(_id);
+            Res.status(HttpStatus.OK).send(result);
+    }
+
+
+    @UseGuards(AuthGuard('JWTaccessToken'))
+    @Get("find-all")
+    @ApiBearerAuth()
+    @ApiOkResponse({type: ICouponListfindOneByIdRes,description: 'Found Successfully'})
+    @ApiBadRequestResponse({type: IModuleRes,description: 'Bad Request'})
+    @ApiInternalServerErrorResponse({type: IModuleRes,description: 'Internal Server Error'})
+    @ApiRequestTimeoutResponse({description: 'Time Out'})
+    async findManyById(@Req() Req: Request, @Res() Res: Response) {
+            let result = await this.Service.findManyModule();
+            Res.status(HttpStatus.OK).send(result);
+    }
+
+}
+
+File Name: couponList.service.ts
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { IDataModuleRes, IModuleRes } from '../../common.service';
+import { CouponListCreateDto, CouponListUpdateDto, ICouponListfindOneByIdRes, ICouponListMessage } from './couponList.dto';
+import { CouponList } from './couponList.interface';
+import * as mongoose from 'mongoose';
+
+@Injectable()
+export class CouponListService {
+
+    constructor(
+        @InjectModel('CouponList') private readonly Module: Model<CouponList>,
+    ) { }
+
+    async createModule(couponListReq: CouponListCreateDto): Promise<IDataModuleRes<CouponList>> {
+        try {
+            let couponList: CouponList = couponListReq CouponList;
+            const createCouponList = new this.Module(couponList);
+            const savedcouponList = await createCouponList.save();
+            return { status: true, message: ICouponListMessage.createdSuccess, data: savedcouponList };
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async updateModule(documentId: string, CouponListDto: CouponListUpdateDto): Promise<IDataModuleRes<CouponList>> {
+        let update = await this.Module.findOneAndUpdate({ _id: documentId }, { $set: CouponListDto });
+        return { status: true, message: ICouponListMessage.updateSuccess, data: update };
+    }
+
+    async deleteModule(documentId: string): Promise<IModuleRes> {
+        await this.Module.update({ _id: documentId }, {$set: {status: false}});
+        return { status: true, message: ICouponListMessage.deleteSuccess };
+    }
+
+    async findOneModule(documentId: string): Promise<ICouponListfindOneByIdRes> {
+        let result = await this.Module.findOne({ _id:  mongoose.Types.ObjectId(documentId) });
+        console.log(result);
+        if (!result) {
+            throw new HttpException(
+                ICouponListMessage.notFound,
+                HttpStatus.NOT_FOUND,
+            );
+        }
+        return { message: ICouponListMessage.foundSuccess, data: result };
+    }
+
+    async findManyModule(): Promise<ICouponListfindOneByIdRes> {
+        let result = await this.Module.find();
+        console.log(result);
+        if (!result) {
+            throw new HttpException(
+                ICouponListMessage.notFound,
+                HttpStatus.NOT_FOUND,
+            );
+        }
+        return { message: ICouponListMessage.foundSuccess, data: result };
+    }
+
+
+}
+
+
+File Name: couponList.interface.ts
+import { Document } from 'mongoose';
+
+export interface CouponList extends Document {
+} 
+
+
+
+File Name: couponList.dto.ts
+import { IsNotEmpty, Length, ArrayMinSize, IsBoolean, IsOptional } from "class-validator";
+import { IModuleRes } from "../../common.service";
+
+
+export class CouponListCreateDto {
+
+ }
+
+
+
+
+ export class CouponListUpdateDto {
+}
+
+ export enum ICouponListMessage {
+    createdSuccess = "CouponList Created Successfully",
+    updateSuccess = "CouponList Details Update Successfully",
+    deleteSuccess = "CouponList Details Deleted Successfully",
+    foundSuccess = "CouponList Found Successully",
+    notFound = "CouponList Not Found"
+}
+
+export class ICouponListfindOneByIdRes extends IModuleRes {
+    data: CouponListCreateDto;
+}
+
+export class ICouponListfindManyRes extends IModuleRes  {
+    data: CouponListCreateDto[];
+    totalCount: number;
+}
+
+export class ICouponListTextManyRes extends IModuleRes {
+    data: CouponListCreateDto[];
+}
+
+export class ICouponListDropDownRes extends IModuleRes {
+    data: CouponListCreateDto[];
+}

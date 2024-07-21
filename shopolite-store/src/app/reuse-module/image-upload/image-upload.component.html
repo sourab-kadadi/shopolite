@@ -1,0 +1,20 @@
+
+  <div class="row" class="profilePic">
+    <label for="uploadImage">
+    <div *ngIf="imageData && imageData.filePath" class="imageMain" [ngStyle]="{'width': width, 'height': height, 'box-shadow': boxShadow}">
+  <img  [ngStyle]="{'width': width, 'height': height}" src="{{ s3path + imageData.filePath }}" />
+  <ion-icon name="cancel" class="cancelButton" (click)="deleteFile()" matTooltip="Delete" matTooltipPosition="right"> cancel </ion-icon>
+  </div>
+  </label>
+  <div *ngIf="!(imageData && imageData.filePath)">
+    <label for="{{idFor}}">
+      <div class="initImgMain" [ngStyle]="{'width': width, 'height': height, 'box-shadow': boxShadow}">
+        <ion-icon name="{{icon}}"></ion-icon>
+      </div>
+    </label>
+    <!-- <div>
+    <p>{{title}}</p>
+    </div> -->
+  </div>
+</div>
+<input type="file" name="uploadImage" id="{{idFor}}" (change)="uploadFileToS3($event)" accept=".png, .jpg, .jpeg" />

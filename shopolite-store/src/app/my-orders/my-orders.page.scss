@@ -1,0 +1,277 @@
+ ion-header {
+     background: var(--white);
+     &::before {
+         content: '';
+         position: absolute;
+         bottom: 0;
+         left: 0;
+         right: 0;
+         width: 100%;
+         height: 8px;
+         background: var(--bg-color);
+         transition: all .3s;
+         display: block;
+         z-index: 1;
+     }
+     ion-toolbar ion-title {
+         padding: 0 15px !important;
+         text-align: center !important;
+         .title_inner {
+          display:flex;
+          justify-content:space-between;
+         }
+
+     }
+     ion-segment {
+         border: none !important;
+         background: var(--none) !important;
+         border-radius: 0px;
+         margin: 0;
+         padding-bottom: 6px;
+         ion-segment-button {
+             background: none !important;
+             position: relative;
+             font-size: .9rem;
+             font-weight: 500;
+             text-transform: uppercase !important;
+             letter-spacing: .7px;
+             --background-checked: var(--transparent) !important;
+             --background-focused: var(--transparent) !important;
+             --border-width: 0 !important;
+             --border-radius: 0 !important;
+             --indicator-color: var(--transparent) !important;
+             --indicator-box-shadow: none !important;
+             --ripple-color: var(--transparent) !important;
+             --color: var(--text-light) !important;
+             --color-checked: var(--text-light) !important;
+             --color-hover: var(--text-light) !important;
+             --background-hover: var(--transparent) !important;
+             padding: 0;
+             width: 100%;
+             &::after {
+                 content: '';
+                 position: absolute;
+                 bottom: 0;
+                 left: 0;
+                 right: 0;
+                 width: 0;
+                 height: 3px;
+                 background: var(--primary);
+                 margin: 0 auto;
+                 transition: all .3s;
+             }
+             ion-label {
+                 margin: 11px 0;
+                 width: 100%;
+             }
+             &.segment-button-checked {
+                 color: var(--primary) !important;
+                 opacity: 1;
+                 &::after {
+                     width: 40px;
+                 }
+             }
+         }
+     }
+ }
+
+ .tab_content {
+     ion-list {
+         background: var(--transparent) !important;
+         margin: 0;
+         padding: 0;
+         ion-item {
+             padding: 0 0px;
+             min-height: unset !important;
+             --inner-padding-end: 0px;
+             --inner-min-height: unset !important;
+             --padding-start: 0;
+             --highligh-color-focused: var(--transparent) !important;
+             background: var(--white);
+             margin-bottom: 8px;
+             margin-top: 14px;
+             .item_inner {
+                 width: 100%;
+                 .item_info {
+                     padding: 10px;
+                     border-bottom: 1px solid var(--bg-color);
+                     .itme_img {
+                         min-width: 45px;
+                         margin-right: 15px;
+                         img {
+                             width: 45px;
+                         }
+                     }
+                     .item_details {
+                         width: 100%;
+                         h3 {
+                             margin: 0;
+                             font-size: .92rem;
+                             color: var(--text-black);
+                             font-weight: 600;
+                             padding-bottom: 8px;
+                             span {
+                                 &.order_status {
+                                     color: var(--primary);
+                                     font-weight: 500;
+                                     font-size: .86rem;
+                                 }
+                             }
+                         }
+                         h4 {
+                             margin: 0;
+                             color: var(--text-light);
+                             font-size: .8rem;
+                             font-weight: 500;
+                             letter-spacing: .3px;
+                         }
+                     }
+                 }
+                 .order_info {
+                     padding: 10px;
+                     .itme_img {
+                         min-width: 45px;
+                         margin-right: 15px;
+                     }
+                     ion-row {
+                         width: 100%;
+                         margin: 0 -5px;
+                         ion-col {
+                             padding: 0 5px;
+                             h5 {
+                                 margin: 0;
+                                 color: var(--text-black);
+                                 font-size: .8rem;
+                                 font-weight: 600;
+                                 &.order_status {
+                                     font-size: .85rem;
+                                     font-weight: 500;
+                                 }
+                             }
+                         }
+                     }
+                 }
+             }
+            //  &.pending {
+            //      .item_inner .order_info ion-row ion-col h5 {
+            //          &.order_status {
+            //              color: red !important;
+            //          }
+            //      }
+            //  }
+            //  &.accepted {
+            //      .item_inner .order_info ion-row ion-col h5 {
+            //          &.order_status {
+            //              color: var(--primary);
+            //          }
+            //      }
+            //  }
+            //  &.delivered {
+            //      .item_inner .order_info ion-row ion-col h5 {
+            //          &.order_status {
+            //              color: green !important;
+            //          }
+            //      }
+            //  }
+         }
+     }
+ }
+
+ ion-list {
+  background: var(--transparent) !important;
+  margin: 0;
+  padding: 0;
+
+  h2 {
+      margin: 0;
+      color: var(--text-light);
+      text-transform: uppercase;
+      font-size: 0.91rem;
+      letter-spacing: 1px;
+      padding: 20px 20px 3px 20px;
+      font-weight: 600;
+  }
+}
+
+.text-color-green {
+  color: green !important;
+}
+
+.text-color-red {
+  color: red !important;
+}
+
+.text-color-orange {
+  color: orange !important;
+}
+
+.text-color-purple {
+  color: purple !important;
+}
+
+ ion-slides {
+     ion-slide {
+         display: block;
+        //  min-height: calc(100vh);
+        //  max-height: calc(100vh);
+         overflow: hidden;
+         overflow-y: auto;
+         text-align: initial;
+         position: relative;
+         -ms-overflow-style: none;
+         scrollbar-width: none;
+         &::-webkit-scrollbar {
+             display: none;
+         }
+     }
+ }
+
+
+.search_box {
+    width: calc(100% - 42px);
+    margin: 0 auto;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    height: 59px;
+    position: relative;
+    background: var(--bg-color);
+    border-radius: 50px;
+    padding: 0 16px;
+    margin-bottom: 9px;
+
+    ion-icon {
+        color: var(--text-black);
+        font-size: 1.35rem;
+        min-width: 30px;
+        height: 30px;
+        line-height: 30px;
+        z-index: 99;
+        padding: 0 2px;
+    }
+
+    ion-searchbar {
+        --background: var(--transparent) !important;
+        --color: var(--text-black);
+        --placeholder-opacity: 1;
+        --placeholder-color: var(--text-light);
+        --placeholder-font-weight: 500 !important;
+        --box-shadow: none !important;
+        padding: unset !important;
+    }
+}
+
+.notFoundOrder {
+    height: calc(100vh - 300px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: gainsboro;
+    font-size: 22px;
+    font-weight: bold;
+    h5 {
+        border: 1px solid;
+        padding: 10px;
+        color: var(--primary);
+    }
+}
